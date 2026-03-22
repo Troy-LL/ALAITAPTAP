@@ -54,3 +54,439 @@ spot_id,name,type,latitude,longitude,hours,address,city
 53,Safe Spot 37,hospital,14.418678,120.994093,24/7,"Mandaluyong, Metro Manila",Mandaluyong
 54,Safe Spot 38,police_station,14.484703,120.931088,24/7,"Pasig, Metro Manila",Pasig
 55,Safe Spot 39,security_post,14.410443,121.084795,24/7,"Quezon City, Metro Manila",Quezon City
+osm-police-relation-12235445,Cubao Police Station,police_station,14.6162445,121.05166886,24/7,P. Tuazon Boulevard,Quezon City
+osm-police-relation-12243295,Quezon City Police Station 10,police_station,14.629760966666666,121.04581606666666,24/7,EDSA,Quezon City
+osm-police-relation-18890371,Caniogan Police Sub-station,police_station,14.56688698,121.0760555,24/7,Dr. Sixto Antonio Avenue,Pasig
+osm-police-way-46647931,Project 4 Police Station № 8,police_station,14.62273734,121.06784824000002,24/7,P. Tuazon Boulevard,Quezon City
+osm-police-way-112551105,Mandaluyong City Police Office,police_station,14.5774401,121.03322832,24/7,,Mandaluyong
+osm-police-way-117164670,U.P. Diliman Police,police_station,14.65210968,121.06542624,24/7,,Metro Manila
+osm-police-way-119709412,Police station (OSM),police_station,14.637078883333333,121.09095476666666,24/7,,Marikina
+osm-police-way-128969885,Manila Police District Headquarters,police_station,14.583695577777778,120.9861433888889,24/7,United Nations Avenue,Manila
+osm-police-way-156315637,Police station (OSM),police_station,14.668131740000002,121.07382224,24/7,,Metro Manila
+osm-police-way-179408054,Barbosa Police Community Precinct,police_station,14.59874158,120.98472638,24/7,Ariston Bautista,Manila
+osm-police-way-179576218,Tourist Police,police_station,14.582141433333334,120.97923385,24/7,,Manila
+osm-police-way-210707952,Police station (OSM),police_station,14.66771904,121.05827954000002,24/7,,Metro Manila
+osm-police-way-243039641,San Juan City Police Office,police_station,14.604943858333334,121.032687175,24/7,Pinaglabanan Road,San Juan
+osm-police-way-255987873,Santa Mesa Police Station,police_station,14.60216374,121.0121486,24/7,Magsaysay Boulevard,Manila
+osm-police-way-265893836,West Grace Park Police Sub-station,police_station,14.65032314,120.98219656,24/7,,Metro Manila
+osm-police-way-266413076,Caloocan City Police Station,police_station,14.657804883333332,120.97453836666666,24/7,Samson Road,Caloocan
+osm-police-way-279275151,Mauway Police Sub-station,police_station,14.5789964,121.04398457142858,24/7,Barangka Drive,Mandaluyong
+osm-police-way-282789966,Quezon City Police Station 12,police_station,14.609818283333333,121.0768676,24/7,E. Rodriguez Jr. Avenue,Quezon City
+osm-police-way-287969050,MPD Outpost 12,police_station,14.61045432,120.9940147,24/7,,Manila
+osm-police-way-301869146,police community presint,police_station,14.66455796,120.99614096,24/7,,Metro Manila
+osm-police-way-301879787,Mazan Security & Investigatory Agency,police_station,14.57826112,121.01181142,24/7,Revillin Street,Manila
+osm-police-way-303264393,Santa Ana Police Station,police_station,14.5823808,121.01199817142856,24/7,Pedro Gil Street,Manila
+osm-police-way-310467476,PCP,police_station,14.621728479999998,121.09329714,24/7,,Marikina
+osm-police-way-310625383,Quezon City Police Station 11,police_station,14.61216564,121.00878168,24/7,,Quezon City
+osm-police-way-310901338,Gulod Police Community Precinct,police_station,14.60961374,121.0085095,24/7,Visayan Avenue,Metro Manila
+osm-police-way-312219944,Pcp- 5,police_station,14.64164446,120.9839023,24/7,,Metro Manila
+osm-police-way-312688392,Greenhills Sub-station 1,police_station,14.60308752,121.05038846,24/7,,San Juan
+osm-police-way-313324049,Sampaloc Police Station,police_station,14.6063119,121.00234748,24/7,G. Tuazon Street,Manila
+osm-police-way-316753817,Campus Safety and Mobility Office,police_station,14.63487444,121.0758633,24/7,,Metro Manila
+osm-police-way-319521036,Binondo Police Station,police_station,14.60439774,120.97321216,24/7,,Manila
+osm-police-way-325151690,MMDA - Police Station,police_station,14.62113,121.1049148,24/7,,Cainta
+osm-police-way-351550295,San Juan Police -Traffic Investigation Unit,police_station,14.6035365,121.02649546666667,24/7,F. Sevilla Street,San Juan
+osm-police-way-354488610,Police Station 2,police_station,14.60739122,120.97542774,24/7,Abad Santos Avenue,Manila
+osm-police-way-360693831,Tayuman Police Community Precinct,police_station,14.61735718,120.97451,24/7,Tayuman Street,Metro Manila
+osm-police-way-387272616,Cainta Police Station,police_station,14.57957834,121.11517348,24/7,,Cainta
+osm-police-way-388186964,Police station (OSM),police_station,14.59007342,121.0942647,24/7,,Metro Manila
+osm-police-way-415383308,Barangay UP Village Police,police_station,14.65153886,121.05603374,24/7,,Metro Manila
+osm-police-way-469743713,Makati Police Station 9,police_station,14.56663592,121.03134786,24/7,San Mateo Street,Makati City
+osm-police-way-477404423,Parang Local Police,police_station,14.65930825,121.11203616666668,24/7,,Marikina
+osm-police-way-486691718,Police Community Precinct № 4,police_station,14.60893476,121.03101102,24/7,M. J. Paterno Street,Metro Manila
+osm-police-way-496258210,Police station (OSM),police_station,14.66153148,120.99982504,24/7,Quirino Highway,Quezon City
+osm-police-way-523227101,Quezon City Police District Police Station 9,police_station,14.6329182,121.05932082,24/7,Anonas Street,Quezon City
+osm-police-way-524846851,Project 6 Police Station,police_station,14.66146084,121.04335626,24/7,,Quezon City
+osm-police-way-525417665,Police station (OSM),police_station,14.65934394,121.02164776,24/7,,Metro Manila
+osm-police-way-542700242,Ermita Police Station,police_station,14.5821021,120.97343844,24/7,Katigbak Drive,Manila
+osm-police-way-588994156,P.S. 21,police_station,14.5812781,121.09816186,24/7,,Metro Manila
+osm-police-way-601219977,Victorino Mapa Police Community Precinct,police_station,14.5993632,121.01715764,24/7,Victorino Mapa Street,Metro Manila
+osm-police-way-602920787,Floodway Police Community Precinct,police_station,14.57020894,121.1060138,24/7,Casimiro A. Ynares Sr. Boulevard,Cainta
+osm-police-way-635483554,San Juan City Police Community Precinct № 5,police_station,14.608961099999998,121.02223232,24/7,Aurora Boulevard,San Juan
+osm-police-way-637457857,barangay police headquarters,police_station,14.603950842857143,121.023018,24/7,,Metro Manila
+osm-police-way-697247929,Punta Police Community Precinct,police_station,14.58566866,121.01060348,24/7,J. Posadas Street,Metro Manila
+osm-police-way-699815562,Sta. Cruz Police Outpost,police_station,14.566427816666668,121.0170059,24/7,Pablo Ocampo Street,Makati
+osm-police-way-734721280,Parang Police Community Precinct,police_station,14.660663533333334,121.1144258,24/7,Lakandula,Marikina
+osm-police-way-749677646,San Miguel Police Sub-station,police_station,14.57119754,121.0964,24/7,M. Eusebio Avenue,Metro Manila
+osm-police-way-775162267,Marulas Police Station,police_station,14.6776192,120.98446346,24/7,India Maria Street,Metro Manila
+osm-police-way-794322099,Quezon City Hall Police Precint,police_station,14.647725142857142,121.05130352857144,24/7,,Metro Manila
+osm-police-way-797780930,Quezon City Police Station № 14,police_station,14.67797448,121.07300026,24/7,Corregidor Street,Metro Manila
+osm-police-way-805184278,Dapitan Police Community Precinct,police_station,14.62238714,121.000147,24/7,Dapitan Street,Metro Manila
+osm-police-way-809434522,Manila Pulis,police_station,14.60521532,120.9818738,24/7,Doroteo Jose Street,Metro Manila
+osm-police-way-929470186,Eastern Police District,police_station,14.579303042857145,121.06350831428573,24/7,Meralco Avenue,Pasig
+osm-police-way-935860280,Santa Cruz Police Station,police_station,14.617278228571427,120.9854037857143,24/7,A. H. Lacson Avenue,Metro Manila
+osm-cctv-way-1021317846,Security guard (OSM),surveillance,14.58998752,121.09631064,24/7,,Metro Manila
+osm-police-way-1035382439,Barangay Addition Hills Cluster 3 Command Base,police_station,14.58764176,121.03890278,24/7,,Metro Manila
+osm-police-way-1061596104,Masambong Police Station,police_station,14.64001316,121.01214628,24/7,Del Monte Avenue,Quezon City
+osm-police-way-1080689868,Gandara Police Community Precinct (OPAC Outpost),police_station,14.6001318,120.98032954,24/7,Ronquillo Street,Manila
+osm-police-way-1085127682,Juan Luna Police Community Precinct,police_station,14.60307918,120.97181322,24/7,Juan Luna Street,Manila
+osm-police-way-1086820642,Police Community Precinct № 3,police_station,14.63403208,121.02045546,24/7,Quezon Avenue,Metro Manila
+osm-police-way-1088740185,Hermosa Police Community Precinct,police_station,14.63264246,120.97585586,24/7,Hermosa Street,Metro Manila
+osm-police-way-1111918339,University Avenue Police Community Precinct,police_station,14.65451248,121.05669822,24/7,,Metro Manila
+osm-cctv-way-1187891750,Security guard (OSM),surveillance,14.66646134,121.07759912000002,24/7,,Metro Manila
+osm-police-way-1188818053,Escolta Police Community Precinct,police_station,14.59680122,120.97689048,24/7,Escolta Street,Metro Manila
+osm-police-way-1240987148,Police station (OSM),police_station,14.591103414285714,121.0006148,24/7,,Metro Manila
+osm-police-way-1241235523,Police station (OSM),police_station,14.58840096,121.08885949999998,24/7,,Metro Manila
+osm-police-way-1304995263,Police station (OSM),police_station,14.637643979999998,120.99359108,24/7,Andres Bonifacio Avenue,Metro Manila
+osm-police-way-1376429972,Police station (OSM),police_station,14.62357466,121.0739107,24/7,,Metro Manila
+osm-police-way-1412662726,Makati Public Safety Department,police_station,14.571797279999998,121.01532384,24/7,,Metro Manila
+osm-cctv-node-21717820,CCTV (OSM),surveillance,14.5760764,121.0212036,24/7,,Metro Manila
+osm-cctv-node-24078959,Surveillance (OSM),surveillance,14.6009796,121.0594506,24/7,,Metro Manila
+osm-lamp-node-33445683,Street lamp (OSM),street_lamp,14.5906441,120.9808429,24/7,,Metro Manila
+osm-lamp-node-252166920,Street lamp (OSM),street_lamp,14.5870989,121.0038959,24/7,,Metro Manila
+osm-police-node-255049936,Police Community Precinc № 2,police_station,14.6634751,120.9840103,24/7,MacArthur Highway,Malabon
+osm-police-node-255050240,Police Community Precinct 2,police_station,14.581231,121.02983,24/7,,Mandaluyong
+osm-police-node-255053941,Pandacan Police Station,police_station,14.5931654,121.0035632,24/7,,Manila
+osm-police-node-255058503,East Grace Park Police Station,police_station,14.6443335,120.9899723,24/7,C-3 Road,Caloocan
+osm-police-node-255058703,Police Community Precinct,police_station,14.6291528,121.0983621,24/7,,Marikina
+osm-police-node-255062399,Pcp-3,police_station,14.603378,121.0987299,24/7,,Pasig
+osm-police-node-255063581,Mandaluyong Police Community Precinct 1,police_station,14.5897925,121.0268436,24/7,A. T. Reyes Street,Mandaluyong
+osm-police-node-255065215,Central Market Police Station,police_station,14.6039633,120.9846776,24/7,,Manila
+osm-police-node-255066642,Police Community Precint № 1,police_station,14.571531,121.059608,24/7,Santa Isabela Street,Pasig
+osm-police-node-255067324,Central Police Station,police_station,14.6330419,121.100654,24/7,,Marikina
+osm-police-node-255067595,Pcp-2,police_station,14.5780621,121.0783786,24/7,,Pasig
+osm-police-node-255068202,QCPD Station 1,police_station,14.6318513,120.9949851,24/7,,Quezon City
+osm-police-node-255070426,Pcp-6,police_station,14.5665337,121.0794801,24/7,,Pasig
+osm-police-node-255070470,Station 2,police_station,14.6477905,121.0280928,24/7,,Quezon City
+osm-police-node-255071445,Dagonoy Police Community Precint,police_station,14.5720282,121.0044632,24/7,Dagonoy Street,Manila
+osm-cctv-node-332183565,CCTV (OSM),surveillance,14.6442202,121.037501,24/7,,Metro Manila
+osm-police-node-357738999,San Mateo Police Substation,police_station,14.6777182,121.1119333,24/7,General A. Luna Street,Metro Manila
+osm-cctv-node-454077179,Surveillance (OSM),surveillance,14.5930723,121.0582748,24/7,,Metro Manila
+osm-cctv-node-454191704,CCTV (OSM),surveillance,14.6551351,121.0308275,24/7,,Metro Manila
+osm-cctv-node-621168225,Surveillance (OSM),surveillance,14.5850116,121.0559866,24/7,,Metro Manila
+osm-cctv-node-673268598,Surveillance (OSM),surveillance,14.6103278,121.0553923,24/7,,Metro Manila
+osm-police-node-696288642,BCEO-TCMP Pasig,police_station,14.6198835,121.0884764,24/7,,Pasig
+osm-cctv-node-746489602,Surveillance (OSM),surveillance,14.5801913,121.0588491,24/7,,Metro Manila
+osm-police-node-925986474,Police station (OSM),police_station,14.6356842,121.1089181,24/7,San Isidro Avenue,Cainta
+osm-cctv-node-965543959,Surveillance (OSM),surveillance,14.6574917,121.0068115,24/7,,Metro Manila
+osm-cctv-node-1037130639,Surveillance (OSM),surveillance,14.5948917,120.993914,24/7,,Metro Manila
+osm-police-node-1037921414,Police Station,police_station,14.5941953,120.9788065,24/7,,Manila
+osm-police-node-1055759056,Police station (OSM),police_station,14.5921529,120.9782835,24/7,,Manila
+osm-police-node-1058992625,EAC Outpost,police_station,14.5819555,120.9861761,24/7,,Manila
+osm-police-node-1412141682,Tourist Police Station,police_station,14.5824944,120.9814114,24/7,Kalaw Avenue,Manila
+osm-cctv-node-1423836689,Surveillance (OSM),surveillance,14.5941306,120.979973,24/7,,Metro Manila
+osm-cctv-node-1548250642,CCTV (OSM),surveillance,14.5748805,121.065296,24/7,,Metro Manila
+osm-police-node-1598554051,Barangay Community Police Station,police_station,14.5942518,121.0584623,24/7,,Mandaluyong
+osm-cctv-node-1934703607,CCTV (OSM),surveillance,14.5768593,121.0194119,24/7,,Metro Manila
+osm-cctv-node-2104677577,CCTV (OSM),surveillance,14.5775952,121.0500536,24/7,,Metro Manila
+osm-police-node-2126363178,Bacood Police Station,police_station,14.5904792,121.0207744,24/7,,Manila
+osm-cctv-node-2138724980,Surveillance (OSM),surveillance,14.601056,121.0793342,24/7,,Metro Manila
+osm-cctv-node-2138782166,Surveillance (OSM),surveillance,14.5761222,121.0498898,24/7,,Metro Manila
+osm-police-node-2322746703,Barangay 260 Outpost,police_station,14.6057277,120.9776802,24/7,Benavidez Street,Manila
+osm-lamp-node-2672493866,Street lamp (OSM),street_lamp,14.6538619,121.0715825,24/7,,Metro Manila
+osm-lamp-node-2672496385,Street lamp (OSM),street_lamp,14.6538799,121.0665858,24/7,,Metro Manila
+osm-lamp-node-2672496566,Street lamp (OSM),street_lamp,14.6566711,121.0697931,24/7,,Metro Manila
+osm-lamp-node-2672496593,Street lamp (OSM),street_lamp,14.6538183,121.0655389,24/7,,Metro Manila
+osm-lamp-node-2672497333,Street lamp (OSM),street_lamp,14.6546739,121.0644663,24/7,,Metro Manila
+osm-lamp-node-2672501744,Street lamp (OSM),street_lamp,14.6541328,121.0694488,24/7,,Metro Manila
+osm-lamp-node-2672514572,Street lamp (OSM),street_lamp,14.6598333,121.0667778,24/7,,Metro Manila
+osm-lamp-node-2672514576,Street lamp (OSM),street_lamp,14.6599722,121.0656944,24/7,,Metro Manila
+osm-lamp-node-2672514582,Street lamp (OSM),street_lamp,14.6600833,121.0680278,24/7,,Metro Manila
+osm-lamp-node-2672517765,Street lamp (OSM),street_lamp,14.6546111,121.0708611,24/7,,Metro Manila
+osm-lamp-node-2672529804,Street lamp (OSM),street_lamp,14.6512257,121.0622926,24/7,,Metro Manila
+osm-lamp-node-2672529815,Street lamp (OSM),street_lamp,14.6546733,121.0661261,24/7,,Metro Manila
+osm-lamp-node-2672532341,Street lamp (OSM),street_lamp,14.6589,121.06705,24/7,,Metro Manila
+osm-lamp-node-2672533779,Street lamp (OSM),street_lamp,14.6470279,121.0630498,24/7,,Metro Manila
+osm-lamp-node-2672533781,Street lamp (OSM),street_lamp,14.6476985,121.0643697,24/7,,Metro Manila
+osm-lamp-node-2672534045,Street lamp (OSM),street_lamp,14.6572,121.07055,24/7,,Metro Manila
+osm-lamp-node-2672539747,Street lamp (OSM),street_lamp,14.6599333,121.0699667,24/7,,Metro Manila
+osm-lamp-node-2946863902,Street lamp (OSM),street_lamp,14.6550928,121.0685736,24/7,,Metro Manila
+osm-cctv-node-3202752882,CCTV (OSM),surveillance,14.5831973,120.9776771,24/7,,Metro Manila
+osm-cctv-node-3238870745,Surveillance (OSM),surveillance,14.673447,121.0490048,24/7,,Metro Manila
+osm-police-node-3288424894,Police station (OSM),police_station,14.6331681,121.0955976,24/7,Kapitan Venciong Street,Marikina
+osm-cctv-node-3291496219,CCTV (OSM),surveillance,14.6156099,121.0741124,24/7,,Metro Manila
+osm-police-node-3650427156,Nangka Police Headquarters,police_station,14.6733496,121.1087721,24/7,Old J. P. Rizal Street,Marikina
+osm-police-node-3906417080,Police station (OSM),police_station,14.5745293,121.0579057,24/7,,Metro Manila
+osm-police-node-3911978514,Police Community Precinct,police_station,14.5980399,121.0299052,24/7,,Metro Manila
+osm-police-node-4104993895,Sibama Police Community Precinct 3,police_station,14.6210066,120.9921011,24/7,Simoun Street,Manila
+osm-police-node-4174135490,Gandara Police Community Precinct,police_station,14.600051,120.97719,24/7,S. Padilla Street,Metro Manila
+osm-police-node-4175755590,Calabash Police Community Precinct,police_station,14.6114875,121.003199,24/7,,Metro Manila
+osm-police-node-4196499445,Mandaluyong Police Community Precinct 5,police_station,14.5778239,121.0535323,24/7,Mayflower Street,Mandaluyong
+osm-cctv-node-4273354943,CCTV (OSM),surveillance,14.5880082,121.0595585,24/7,,Metro Manila
+osm-lamp-node-4324757094,Street lamp (OSM),street_lamp,14.6521822,121.0703745,24/7,,Metro Manila
+osm-lamp-node-4324757119,Street lamp (OSM),street_lamp,14.6536211,121.0728602,24/7,,Metro Manila
+osm-lamp-node-4326545834,Street lamp (OSM),street_lamp,14.6561593,121.0682904,24/7,,Metro Manila
+osm-lamp-node-4326545839,Street lamp (OSM),street_lamp,14.656167,121.0659683,24/7,,Metro Manila
+osm-lamp-node-4326545851,Street lamp (OSM),street_lamp,14.6561807,121.0669567,24/7,,Metro Manila
+osm-lamp-node-4333467993,Street lamp (OSM),street_lamp,14.6532964,121.0686078,24/7,,Metro Manila
+osm-police-node-4364658998,Police station (OSM),police_station,14.6012224,121.000353,24/7,,Metro Manila
+osm-cctv-node-4427334775,CCTV (OSM),surveillance,14.5748608,121.0208751,24/7,,Metro Manila
+osm-cctv-node-4427334800,CCTV (OSM),surveillance,14.5755283,121.0193886,24/7,,Metro Manila
+osm-lamp-node-4567960795,Street lamp (OSM),street_lamp,14.5947356,121.0420151,24/7,,Metro Manila
+osm-cctv-node-4569959270,Surveillance (OSM),surveillance,14.5919721,121.0370227,24/7,,Metro Manila
+osm-police-node-4580455490,Police Community Precinct 1,police_station,14.6174997,121.00176,24/7,Mabuhay Rotonda,Metro Manila
+osm-police-node-4649834090,Police Palm Plaza,police_station,14.5732756,120.981093,24/7,,Metro Manila
+osm-cctv-node-4739337370,CCTV (OSM),surveillance,14.5942153,121.0386096,24/7,,Metro Manila
+osm-police-node-4812536028,Gagalangin Police Community Precinct,police_station,14.6288627,120.9736226,24/7,Pampanga,Metro Manila
+osm-police-node-4837730421,Taguig Traffic Management Office (TMO) Outpost,police_station,14.5679091,121.0474338,24/7,,Taguig
+osm-lamp-node-4873088587,Street lamp (OSM),street_lamp,14.5892831,121.0234373,24/7,,Metro Manila
+osm-police-node-4912234581,Police Community Precinct № 8,police_station,14.6016987,121.0314293,24/7,,Metro Manila
+osm-cctv-node-4912349786,CCTV (OSM),surveillance,14.6010522,121.0298887,24/7,,Metro Manila
+osm-police-node-4974141256,Kamuning Police Post,police_station,14.6285733,121.0387398,24/7,Kamuning Road,Quezon City
+osm-cctv-node-5105760221,Surveillance (OSM),surveillance,14.5764435,121.1160576,24/7,,Metro Manila
+osm-police-node-5142570622,Pag-asa Police Sub-station,police_station,14.5913857,121.0253942,24/7,General Kalentong Street,Metro Manila
+osm-police-node-5142570722,Mandaluyong Station Patrol Unit,police_station,14.5826033,121.0520936,24/7,Shaw Boulevard,Metro Manila
+osm-cctv-node-5284282566,CCTV (OSM),surveillance,14.6575777,121.0198004,24/7,,Metro Manila
+osm-police-node-5469036422,PDEA Special Enforcement Service,police_station,14.639742,121.0421241,24/7,NIA Road,Metro Manila
+osm-police-node-5585712312,Bahay Toro Police Community Precinct,police_station,14.6646084,121.0211809,24/7,Road 15,Metro Manila
+osm-lamp-node-5770193155,Street lamp (OSM),street_lamp,14.6693304,121.1091848,24/7,,Metro Manila
+osm-lamp-node-5770193157,Street lamp (OSM),street_lamp,14.6689109,121.1100691,24/7,,Metro Manila
+osm-cctv-node-6006974250,CCTV (OSM),surveillance,14.6077431,121.0833368,24/7,,Metro Manila
+osm-police-node-6048268364,Remedios Police Community Precinct,police_station,14.5701369,120.9868338,24/7,Remedios Circle,Metro Manila
+osm-cctv-node-6167095853,CCTV (OSM),surveillance,14.6374758,121.0106006,24/7,,Metro Manila
+osm-police-node-6216144786,Highway Patrol Group Clearance Office,police_station,14.5775735,121.0652683,24/7,Captain Henry Javier Street,Metro Manila
+osm-lamp-node-6335860650,Street lamp (OSM),street_lamp,14.587016,121.0636428,24/7,,Metro Manila
+osm-cctv-node-6355854887,CCTV (OSM),surveillance,14.5931367,121.041339,24/7,,Metro Manila
+osm-cctv-node-6355854888,CCTV (OSM),surveillance,14.5939007,121.0398987,24/7,,Metro Manila
+osm-cctv-node-6355855887,CCTV (OSM),surveillance,14.5921114,121.0415751,24/7,,Metro Manila
+osm-cctv-node-6355855888,CCTV (OSM),surveillance,14.5954896,121.0389653,24/7,,Metro Manila
+osm-cctv-node-6355855912,CCTV (OSM),surveillance,14.5931803,121.0384624,24/7,,Metro Manila
+osm-cctv-node-6355855913,CCTV (OSM),surveillance,14.5930921,121.0394441,24/7,,Metro Manila
+osm-cctv-node-6355855985,CCTV (OSM),surveillance,14.593518,121.0425729,24/7,,Metro Manila
+osm-cctv-node-6355855986,CCTV (OSM),surveillance,14.5921542,121.0405478,24/7,,Metro Manila
+osm-cctv-node-6355856012,CCTV (OSM),surveillance,14.5932802,121.0322437,24/7,,Metro Manila
+osm-cctv-node-6355858486,CCTV (OSM),surveillance,14.5966874,121.0394105,24/7,,Metro Manila
+osm-cctv-node-6355859388,CCTV (OSM),surveillance,14.5912904,121.0356742,24/7,,Metro Manila
+osm-cctv-node-6375463055,CCTV (OSM),surveillance,14.5911291,121.0287848,24/7,,Metro Manila
+osm-cctv-node-6444360097,CCTV (OSM),surveillance,14.5672915,121.0429276,24/7,,Metro Manila
+osm-cctv-node-6447467381,Surveillance (OSM),surveillance,14.5957957,121.0342184,24/7,,Metro Manila
+osm-cctv-node-6448916816,CCTV (OSM),surveillance,14.5959628,121.0726237,24/7,,Metro Manila
+osm-cctv-node-6497169611,CCTV (OSM),surveillance,14.5666092,121.0627105,24/7,,Metro Manila
+osm-cctv-node-6497169620,Surveillance (OSM),surveillance,14.5665095,121.057966,24/7,,Metro Manila
+osm-cctv-node-6497169626,Surveillance (OSM),surveillance,14.5666224,121.0569965,24/7,,Metro Manila
+osm-cctv-node-6497169640,Surveillance (OSM),surveillance,14.5666839,121.0591792,24/7,,Metro Manila
+osm-cctv-node-6499272629,CCTV (OSM),surveillance,14.5730213,121.0632056,24/7,,Metro Manila
+osm-cctv-node-6499272636,CCTV (OSM),surveillance,14.5720328,121.0653521,24/7,,Metro Manila
+osm-cctv-node-6499272640,CCTV (OSM),surveillance,14.5721407,121.0667722,24/7,,Metro Manila
+osm-cctv-node-6499272642,CCTV (OSM),surveillance,14.5711128,121.0656532,24/7,,Metro Manila
+osm-cctv-node-6499272654,CCTV (OSM),surveillance,14.5785536,121.0642274,24/7,,Metro Manila
+osm-cctv-node-6499272655,CCTV (OSM),surveillance,14.5768531,121.0659504,24/7,,Metro Manila
+osm-cctv-node-6499272658,CCTV (OSM),surveillance,14.5771561,121.0668366,24/7,,Metro Manila
+osm-cctv-node-6499272661,CCTV (OSM),surveillance,14.5764853,121.0675969,24/7,,Metro Manila
+osm-cctv-node-6499272665,CCTV (OSM),surveillance,14.5777207,121.0676903,24/7,,Metro Manila
+osm-cctv-node-6499272672,CCTV (OSM),surveillance,14.5742036,121.0668934,24/7,,Metro Manila
+osm-cctv-node-6499272677,CCTV (OSM),surveillance,14.5754248,121.0665187,24/7,,Metro Manila
+osm-cctv-node-6499272889,CCTV (OSM),surveillance,14.5741873,121.0645734,24/7,,Metro Manila
+osm-cctv-node-6501419993,CCTV (OSM),surveillance,14.5677056,121.0575384,24/7,,Metro Manila
+osm-cctv-node-6501419995,CCTV (OSM),surveillance,14.5692265,121.0601335,24/7,,Metro Manila
+osm-cctv-node-6501419997,CCTV (OSM),surveillance,14.5675157,121.0629262,24/7,,Metro Manila
+osm-cctv-node-6501420006,CCTV (OSM),surveillance,14.5735757,121.0614272,24/7,,Metro Manila
+osm-cctv-node-6501420007,CCTV (OSM),surveillance,14.5712505,121.0608736,24/7,,Metro Manila
+osm-cctv-node-6501420008,CCTV (OSM),surveillance,14.572128,121.0606,24/7,,Metro Manila
+osm-cctv-node-6501420021,CCTV (OSM),surveillance,14.5681521,121.0559327,24/7,,Metro Manila
+osm-cctv-node-6501473987,CCTV (OSM),surveillance,14.5792434,121.078546,24/7,,Metro Manila
+osm-cctv-node-6501473992,CCTV (OSM),surveillance,14.5777573,121.0774655,24/7,,Metro Manila
+osm-cctv-node-6501473993,CCTV (OSM),surveillance,14.5769134,121.0780455,24/7,,Metro Manila
+osm-cctv-node-6501473999,CCTV (OSM),surveillance,14.5789462,121.0799867,24/7,,Metro Manila
+osm-cctv-node-6501474008,CCTV (OSM),surveillance,14.5800616,121.0805365,24/7,,Metro Manila
+osm-cctv-node-6501474011,CCTV (OSM),surveillance,14.5808579,121.0809801,24/7,,Metro Manila
+osm-cctv-node-6501474012,CCTV (OSM),surveillance,14.5817165,121.0815147,24/7,,Metro Manila
+osm-cctv-node-6501474015,CCTV (OSM),surveillance,14.582346,121.0806871,24/7,,Metro Manila
+osm-cctv-node-6501474018,CCTV (OSM),surveillance,14.581478,121.0799905,24/7,,Metro Manila
+osm-cctv-node-6501474022,CCTV (OSM),surveillance,14.5803258,121.0792891,24/7,,Metro Manila
+osm-cctv-node-6501474056,CCTV (OSM),surveillance,14.582756,121.0771861,24/7,,Metro Manila
+osm-cctv-node-6501474065,CCTV (OSM),surveillance,14.5893973,121.0726374,24/7,,Metro Manila
+osm-cctv-node-6501838397,CCTV (OSM),surveillance,14.567182,121.0731802,24/7,,Metro Manila
+osm-cctv-node-6501838400,CCTV (OSM),surveillance,14.5669493,121.0721909,24/7,,Metro Manila
+osm-cctv-node-6507576627,CCTV (OSM),surveillance,14.5752176,121.0168428,24/7,,Metro Manila
+osm-cctv-node-6522443135,CCTV (OSM),surveillance,14.5667314,121.0857986,24/7,,Metro Manila
+osm-cctv-node-6522443136,CCTV (OSM),surveillance,14.5679439,121.0858927,24/7,,Metro Manila
+osm-cctv-node-6522578602,Surveillance (OSM),surveillance,14.587883,121.097227,24/7,,Metro Manila
+osm-cctv-node-6522578605,Surveillance (OSM),surveillance,14.5888886,121.1014796,24/7,,Metro Manila
+osm-cctv-node-6522578607,Surveillance (OSM),surveillance,14.5871647,121.1014577,24/7,,Metro Manila
+osm-cctv-node-6522578609,Surveillance (OSM),surveillance,14.5846548,121.1009853,24/7,,Metro Manila
+osm-cctv-node-6522578613,Surveillance (OSM),surveillance,14.5813799,121.1018374,24/7,,Metro Manila
+osm-cctv-node-6522578616,Surveillance (OSM),surveillance,14.5891974,121.097369,24/7,,Metro Manila
+osm-cctv-node-6522578627,Surveillance (OSM),surveillance,14.5838502,121.1014958,24/7,,Metro Manila
+osm-cctv-node-6522689705,CCTV (OSM),surveillance,14.5721494,121.0804115,24/7,,Metro Manila
+osm-cctv-node-6522689709,CCTV (OSM),surveillance,14.5732489,121.0805516,24/7,,Metro Manila
+osm-cctv-node-6522689718,Surveillance (OSM),surveillance,14.5737015,121.0786388,24/7,,Metro Manila
+osm-cctv-node-6522689724,CCTV (OSM),surveillance,14.5740464,121.0818006,24/7,,Metro Manila
+osm-cctv-node-6522689726,CCTV (OSM),surveillance,14.5737556,121.083785,24/7,,Metro Manila
+osm-cctv-node-6522689729,CCTV (OSM),surveillance,14.5728294,121.083192,24/7,,Metro Manila
+osm-cctv-node-6522689732,CCTV (OSM),surveillance,14.5716377,121.0827871,24/7,,Metro Manila
+osm-cctv-node-6522689735,CCTV (OSM),surveillance,14.567864,121.0802773,24/7,,Metro Manila
+osm-cctv-node-6522689743,CCTV (OSM),surveillance,14.5668338,121.0774505,24/7,,Metro Manila
+osm-cctv-node-6522689745,CCTV (OSM),surveillance,14.5679626,121.0781616,24/7,,Metro Manila
+osm-cctv-node-6522689752,CCTV (OSM),surveillance,14.5689359,121.0774596,24/7,,Metro Manila
+osm-cctv-node-6522689756,CCTV (OSM),surveillance,14.5710188,121.0778208,24/7,,Metro Manila
+osm-cctv-node-6522689759,CCTV (OSM),surveillance,14.5698459,121.0769132,24/7,,Metro Manila
+osm-cctv-node-6522689764,CCTV (OSM),surveillance,14.5683818,121.0764536,24/7,,Metro Manila
+osm-cctv-node-6522689766,CCTV (OSM),surveillance,14.5667584,121.0741712,24/7,,Metro Manila
+osm-cctv-node-6522689768,CCTV (OSM),surveillance,14.5702609,121.0756043,24/7,,Metro Manila
+osm-cctv-node-6522689772,CCTV (OSM),surveillance,14.5722743,121.0778288,24/7,,Metro Manila
+osm-cctv-node-6522689777,CCTV (OSM),surveillance,14.5742768,121.0774388,24/7,,Metro Manila
+osm-cctv-node-6522689779,CCTV (OSM),surveillance,14.5719758,121.079144,24/7,,Metro Manila
+osm-police-node-6523052905,Bantay Bayan Outpost,police_station,14.586823,121.0225622,24/7,,Metro Manila
+osm-cctv-node-6524089837,CCTV (OSM),surveillance,14.5783014,121.0816904,24/7,,Metro Manila
+osm-cctv-node-6524089842,CCTV (OSM),surveillance,14.5777125,121.0826285,24/7,,Metro Manila
+osm-cctv-node-6524089851,CCTV (OSM),surveillance,14.5755982,121.0979446,24/7,,Metro Manila
+osm-cctv-node-6524138835,CCTV (OSM),surveillance,14.6108168,121.0858232,24/7,,Metro Manila
+osm-cctv-node-6524138840,CCTV (OSM),surveillance,14.6127184,121.0842194,24/7,,Metro Manila
+osm-cctv-node-6524138843,CCTV (OSM),surveillance,14.6135684,121.0833954,24/7,,Metro Manila
+osm-cctv-node-6524138847,CCTV (OSM),surveillance,14.6142797,121.0825601,24/7,,Metro Manila
+osm-cctv-node-6524138854,CCTV (OSM),surveillance,14.6163177,121.0815111,24/7,,Metro Manila
+osm-cctv-node-6524138860,CCTV (OSM),surveillance,14.618711,121.0819195,24/7,,Metro Manila
+osm-cctv-node-6524138880,CCTV (OSM),surveillance,14.6127642,121.0821939,24/7,,Metro Manila
+osm-cctv-node-6528177225,CCTV (OSM),surveillance,14.5788914,121.0612276,24/7,,Metro Manila
+osm-cctv-node-6528177234,CCTV (OSM),surveillance,14.5824421,121.0601457,24/7,,Metro Manila
+osm-cctv-node-6528177237,CCTV (OSM),surveillance,14.584258,121.060063,24/7,,Metro Manila
+osm-cctv-node-6528177238,CCTV (OSM),surveillance,14.5867559,121.0598696,24/7,,Metro Manila
+osm-cctv-node-6528177241,CCTV (OSM),surveillance,14.5890127,121.0604447,24/7,,Metro Manila
+osm-cctv-node-6528177243,CCTV (OSM),surveillance,14.590209,121.0609206,24/7,,Metro Manila
+osm-cctv-node-6528177245,CCTV (OSM),surveillance,14.5895858,121.0624981,24/7,,Metro Manila
+osm-cctv-node-6528177261,CCTV (OSM),surveillance,14.5844969,121.0635542,24/7,,Metro Manila
+osm-cctv-node-6528177262,CCTV (OSM),surveillance,14.582958,121.0636462,24/7,,Metro Manila
+osm-cctv-node-6528177265,CCTV (OSM),surveillance,14.5830505,121.0611362,24/7,,Metro Manila
+osm-cctv-node-6528177267,CCTV (OSM),surveillance,14.5812191,121.0603427,24/7,,Metro Manila
+osm-cctv-node-6528177268,CCTV (OSM),surveillance,14.5802507,121.0601114,24/7,,Metro Manila
+osm-cctv-node-6528177269,CCTV (OSM),surveillance,14.5787534,121.0595808,24/7,,Metro Manila
+osm-cctv-node-6528177274,CCTV (OSM),surveillance,14.5820973,121.0611759,24/7,,Metro Manila
+osm-cctv-node-6528177275,CCTV (OSM),surveillance,14.5807718,121.0617522,24/7,,Metro Manila
+osm-cctv-node-6528177278,CCTV (OSM),surveillance,14.5775006,121.0599757,24/7,,Metro Manila
+osm-cctv-node-6528177283,CCTV (OSM),surveillance,14.5768729,121.0607489,24/7,,Metro Manila
+osm-cctv-node-6528217786,CCTV (OSM),surveillance,14.5777825,121.0625778,24/7,,Metro Manila
+osm-cctv-node-6528217790,CCTV (OSM),surveillance,14.576383,121.0592759,24/7,,Metro Manila
+osm-cctv-node-6534718273,CCTV (OSM),surveillance,14.5800181,121.0266556,24/7,,Metro Manila
+osm-cctv-node-6541304609,CCTV (OSM),surveillance,14.5862652,121.0844652,24/7,,Metro Manila
+osm-cctv-node-6541304615,CCTV (OSM),surveillance,14.5902731,121.0895592,24/7,,Metro Manila
+osm-cctv-node-6541304623,CCTV (OSM),surveillance,14.5905726,121.0839516,24/7,,Metro Manila
+osm-cctv-node-6541380981,CCTV (OSM),surveillance,14.6047951,121.1050267,24/7,,Metro Manila
+osm-cctv-node-6541412692,CCTV (OSM),surveillance,14.5991305,121.0912725,24/7,,Metro Manila
+osm-cctv-node-6541717590,CCTV (OSM),surveillance,14.6136002,121.0958713,24/7,,Metro Manila
+osm-cctv-node-6541717591,CCTV (OSM),surveillance,14.6151557,121.0959052,24/7,,Metro Manila
+osm-cctv-node-6541717593,CCTV (OSM),surveillance,14.6097118,121.0954016,24/7,,Metro Manila
+osm-cctv-node-6541717594,CCTV (OSM),surveillance,14.6132555,121.0944544,24/7,,Metro Manila
+osm-cctv-node-6541717596,CCTV (OSM),surveillance,14.6131085,121.0935219,24/7,,Metro Manila
+osm-cctv-node-6541717598,CCTV (OSM),surveillance,14.6114742,121.0928984,24/7,,Metro Manila
+osm-cctv-node-6541717601,CCTV (OSM),surveillance,14.6111985,121.0938539,24/7,,Metro Manila
+osm-cctv-node-6541717604,CCTV (OSM),surveillance,14.6104481,121.0921992,24/7,,Metro Manila
+osm-cctv-node-6541717607,CCTV (OSM),surveillance,14.6096082,121.0940072,24/7,,Metro Manila
+osm-cctv-node-6541717610,CCTV (OSM),surveillance,14.6093194,121.0963292,24/7,,Metro Manila
+osm-cctv-node-6541717614,CCTV (OSM),surveillance,14.6120403,121.0973737,24/7,,Metro Manila
+osm-cctv-node-6541717619,CCTV (OSM),surveillance,14.6137898,121.0982248,24/7,,Metro Manila
+osm-cctv-node-6541717628,CCTV (OSM),surveillance,14.616127,121.0971947,24/7,,Metro Manila
+osm-cctv-node-6541717631,CCTV (OSM),surveillance,14.6171827,121.0973426,24/7,,Metro Manila
+osm-cctv-node-6541717639,CCTV (OSM),surveillance,14.6192583,121.0981083,24/7,,Metro Manila
+osm-cctv-node-6541717642,CCTV (OSM),surveillance,14.6152163,121.1003517,24/7,,Metro Manila
+osm-cctv-node-6541717645,CCTV (OSM),surveillance,14.6154339,121.1012638,24/7,,Metro Manila
+osm-cctv-node-6541717653,CCTV (OSM),surveillance,14.6087806,121.1035652,24/7,,Metro Manila
+osm-cctv-node-6541717654,CCTV (OSM),surveillance,14.6081125,121.1025341,24/7,,Metro Manila
+osm-police-node-6568964446,Makati Police Station,police_station,14.5683683,121.0073615,24/7,Archimedes Street,Metro Manila
+osm-cctv-node-6836135173,CCTV (OSM),surveillance,14.5739136,121.0203756,24/7,,Metro Manila
+osm-police-node-7022731494,Intramuros Police Community Precinct,police_station,14.5873532,120.9788247,24/7,,Metro Manila
+osm-police-node-7192253808,Police station (OSM),police_station,14.5681165,121.0694526,24/7,F. Pike Street,Metro Manila
+osm-cctv-node-7195153223,CCTV (OSM),surveillance,14.6390375,121.0358828,24/7,,Metro Manila
+osm-police-node-7410607886,Police station (OSM),police_station,14.63459,121.0267746,24/7,,Metro Manila
+osm-cctv-node-7429067797,Surveillance (OSM),surveillance,14.5869995,120.9773918,24/7,,Metro Manila
+osm-police-node-7440507610,Bambang Police Community Precinct,police_station,14.6113969,120.9792915,24/7,Bambang Street,Metro Manila
+osm-cctv-node-7548625933,CCTV (OSM),surveillance,14.5857905,121.0580573,24/7,,Metro Manila
+osm-cctv-node-7683188909,CCTV (OSM),surveillance,14.6400562,121.0986015,24/7,,Metro Manila
+osm-cctv-node-7683188936,CCTV (OSM),surveillance,14.6386006,121.0981944,24/7,,Metro Manila
+osm-cctv-node-8134984891,CCTV (OSM),surveillance,14.6753768,121.1098138,24/7,,Metro Manila
+osm-cctv-node-8367072875,CCTV (OSM),surveillance,14.6373597,121.0569354,24/7,,Metro Manila
+osm-cctv-node-8370899107,CCTV (OSM),surveillance,14.6187504,121.0357238,24/7,,Metro Manila
+osm-cctv-node-8401489595,CCTV (OSM),surveillance,14.5881105,121.0036733,24/7,,Metro Manila
+osm-cctv-node-8403641184,CCTV (OSM),surveillance,14.5858229,121.0044837,24/7,,Metro Manila
+osm-cctv-node-8523000919,Surveillance (OSM),surveillance,14.6068316,121.0249743,24/7,,Metro Manila
+osm-lamp-node-8591418184,Street lamp (OSM),street_lamp,14.6788429,121.0177602,24/7,,Metro Manila
+osm-lamp-node-8591873229,Street lamp (OSM),street_lamp,14.6739085,121.0182745,24/7,,Metro Manila
+osm-lamp-node-8591873232,Street lamp (OSM),street_lamp,14.6737164,121.0192312,24/7,,Metro Manila
+osm-lamp-node-8592176528,Street lamp (OSM),street_lamp,14.6724722,121.0186438,24/7,,Metro Manila
+osm-lamp-node-8603371913,Street lamp (OSM),street_lamp,14.6776582,121.0186385,24/7,,Metro Manila
+osm-lamp-node-8603400419,Street lamp (OSM),street_lamp,14.6766542,121.0188551,24/7,,Metro Manila
+osm-cctv-node-8631715001,CCTV (OSM),surveillance,14.6324886,121.0829207,24/7,,Metro Manila
+osm-cctv-node-8704174745,CCTV (OSM),surveillance,14.6437995,121.0168438,24/7,,Metro Manila
+osm-police-node-8751784375,Lico Community Police Assistance Center,police_station,14.6244764,120.9828387,24/7,Lico Street,Metro Manila
+osm-police-node-8826429716,Galas Police Station Ⅱ,police_station,14.6189133,121.0155285,24/7,,Metro Manila
+osm-cctv-node-9153472892,CCTV (OSM),surveillance,14.6023911,121.0351998,24/7,,Metro Manila
+osm-cctv-node-9153624484,CCTV (OSM),surveillance,14.595215,121.0331619,24/7,,Metro Manila
+osm-cctv-node-9366610370,CCTV (OSM),surveillance,14.648783,121.0928917,24/7,,Metro Manila
+osm-police-node-9458409094,Talipapa Police Station,police_station,14.6681018,121.0087086,24/7,Quirino Highway,Metro Manila
+osm-lamp-node-9605334493,Street lamp (OSM),street_lamp,14.6483255,121.0660423,24/7,,Metro Manila
+osm-lamp-node-9605334494,Street lamp (OSM),street_lamp,14.6477678,121.0673129,24/7,,Metro Manila
+osm-lamp-node-9605334495,Street lamp (OSM),street_lamp,14.6488042,121.0737777,24/7,,Metro Manila
+osm-lamp-node-9605334496,Street lamp (OSM),street_lamp,14.6481045,121.0716426,24/7,,Metro Manila
+osm-cctv-node-9750849212,CCTV (OSM),surveillance,14.6736643,121.1139404,24/7,,Metro Manila
+osm-police-node-9768685613,"Addition Hills, Police Substation № 2",police_station,14.5851253,121.0365433,24/7,Molave Street,Metro Manila
+osm-cctv-node-9768797434,CCTV (OSM),surveillance,14.5681068,121.0337055,24/7,,Metro Manila
+osm-cctv-node-9768797440,CCTV (OSM),surveillance,14.5694152,121.0348863,24/7,,Metro Manila
+osm-cctv-node-9771253716,CCTV (OSM),surveillance,14.588873,121.0269222,24/7,,Metro Manila
+osm-cctv-node-9781044680,CCTV (OSM),surveillance,14.5864796,121.0414214,24/7,,Metro Manila
+osm-cctv-node-9869145141,CCTV (OSM),surveillance,14.5957925,121.079747,24/7,,Metro Manila
+osm-police-node-9958193933,Palanca Community Police Precinct,police_station,14.5951364,120.9842348,24/7,Carlos Palanca Street,Metro Manila
+osm-cctv-node-9960597305,CCTV (OSM),surveillance,14.6243641,120.9815596,24/7,,Metro Manila
+osm-police-node-10025895517,Police station (OSM),police_station,14.5881358,121.0324623,24/7,A. Bonifacio Street,Metro Manila
+osm-police-node-10088106946,Police Community Precinct № 1,police_station,14.6720666,121.0688786,24/7,Luzon Avenue,Quezon City
+osm-cctv-node-10148917330,CCTV (OSM),surveillance,14.6205373,121.0002905,24/7,,Metro Manila
+osm-police-node-10164182723,Escopa Police Community Precinct,police_station,14.6278321,121.0721435,24/7,Pud Site,Quezon City
+osm-cctv-node-10740492507,Surveillance (OSM),surveillance,14.6017301,121.0043842,24/7,,Metro Manila
+osm-police-node-10740492905,Police station (OSM),police_station,14.5844047,121.0033989,24/7,Paco-Santa Mesa Road,Metro Manila
+osm-police-node-10787049501,Malanday Police Sub-station,police_station,14.652513,121.0938946,24/7,,Marikina
+osm-lamp-node-10854091185,Street lamp (OSM),street_lamp,14.657604,121.0681325,24/7,,Metro Manila
+osm-lamp-node-10854873494,Street lamp (OSM),street_lamp,14.6575541,121.0694134,24/7,,Metro Manila
+osm-lamp-node-10855359182,Street lamp (OSM),street_lamp,14.6588098,121.0685257,24/7,,Metro Manila
+osm-lamp-node-10855368137,Street lamp (OSM),street_lamp,14.6579307,121.0670413,24/7,,Metro Manila
+osm-lamp-node-10855556325,Street lamp (OSM),street_lamp,14.6583814,121.0706614,24/7,,Metro Manila
+osm-lamp-node-10855564642,Street lamp (OSM),street_lamp,14.6593896,121.070762,24/7,,Metro Manila
+osm-cctv-node-10863862522,CCTV (OSM),surveillance,14.5925537,121.0331486,24/7,,Metro Manila
+osm-cctv-node-10911948148,CCTV (OSM),surveillance,14.5946062,121.0374404,24/7,,Metro Manila
+osm-cctv-node-10911948149,CCTV (OSM),surveillance,14.5971331,121.037875,24/7,,Metro Manila
+osm-police-node-10913135789,Hulo Police Sub-Station,police_station,14.5701453,121.0318474,24/7,Coronado Street,Mandaluyong
+osm-lamp-node-10996324098,Street lamp (OSM),street_lamp,14.6559901,121.0649459,24/7,,Metro Manila
+osm-lamp-node-10996382819,Street lamp (OSM),street_lamp,14.6557658,121.0698019,24/7,,Metro Manila
+osm-police-node-11049327939,Pandacan Police Station 10,police_station,14.5907143,121.0093085,24/7,,Metro Manila
+osm-police-node-11173244240,Barangka Police Sub-station,police_station,14.5715114,121.0410936,24/7,P. Oliveros Street,Metro Manila
+osm-cctv-node-11347651521,Security guard (OSM),surveillance,14.6004853,120.9846985,24/7,,Metro Manila
+osm-lamp-node-11374973739,Street lamp (OSM),street_lamp,14.6344244,121.007132,24/7,,Metro Manila
+osm-cctv-node-11538595721,Security guard (OSM),surveillance,14.6400672,121.0330815,24/7,,Metro Manila
+osm-police-node-11658175874,SAB Police Community Precinct Outpost,police_station,14.5762126,121.0058387,24/7,,Metro Manila
+osm-police-node-11680848090,Mobile Police Sub-station 5,police_station,14.5723226,121.0476361,24/7,Pioneer Street,Metro Manila
+osm-lamp-node-11733708566,Street lamp (OSM),street_lamp,14.5671788,120.9917124,24/7,,Metro Manila
+osm-cctv-node-11736280904,CCTV (OSM),surveillance,14.5773114,121.0129086,24/7,,Metro Manila
+osm-cctv-node-11736280910,CCTV (OSM),surveillance,14.5792408,121.012584,24/7,,Metro Manila
+osm-lamp-node-11736280919,Street lamp (OSM),street_lamp,14.5811331,121.0108436,24/7,,Metro Manila
+osm-police-node-11743296258,Mabini - J. Rizal Police Sub-station,police_station,14.5855163,121.0211081,24/7,J. P. Rizal Street,Metro Manila
+osm-lamp-node-11828244028,Street lamp (OSM),street_lamp,14.6094544,120.9793293,24/7,,Metro Manila
+osm-police-node-11861378908,J. Bocobo Police Community Precinct 3,police_station,14.5796997,120.981381,24/7,,Metro Manila
+osm-police-node-11912109088,Pasig City Police Station,police_station,14.5699225,121.0815962,24/7,,Metro Manila
+osm-cctv-node-11927546308,CCTV (OSM),surveillance,14.5806875,121.076541,24/7,,Metro Manila
+osm-police-node-11957600291,"Manggahan, Police Sub-station № 8",police_station,14.5992517,121.1000801,24/7,Kaayusan Street,Metro Manila
+osm-lamp-node-12054340655,Street lamp (OSM),street_lamp,14.6465999,121.1163606,24/7,,Metro Manila
+osm-lamp-node-12054652038,Street lamp (OSM),street_lamp,14.6478966,121.1162395,24/7,,Metro Manila
+osm-police-node-12067204615,Balingasa Police Community Precinct,police_station,14.6547654,120.9994268,24/7,,Metro Manila
+osm-police-node-12075001329,Potrero Police Sub-station,police_station,14.6659572,120.9806547,24/7,Governor Wenceslao Pascual Avenue,Metro Manila
+osm-cctv-node-12077747564,CCTV (OSM),surveillance,14.6418237,121.054903,24/7,,Metro Manila
+osm-lamp-node-12089747957,Street lamp (OSM),street_lamp,14.6409184,121.11479,24/7,,Metro Manila
+osm-lamp-node-12089778372,Street lamp (OSM),street_lamp,14.6411725,121.1137454,24/7,,Metro Manila
+osm-lamp-node-12090242124,Street lamp (OSM),street_lamp,14.6414436,121.1126234,24/7,,Metro Manila
+osm-lamp-node-12090242132,Street lamp (OSM),street_lamp,14.6424293,121.1129731,24/7,,Metro Manila
+osm-lamp-node-12090242140,Street lamp (OSM),street_lamp,14.6436031,121.113366,24/7,,Metro Manila
+osm-lamp-node-12094988267,Street lamp (OSM),street_lamp,14.6354528,121.0974893,24/7,,Metro Manila
+osm-cctv-node-12105543292,CCTV (OSM),surveillance,14.582387,121.0071084,24/7,,Metro Manila
+osm-lamp-node-12121757256,Street lamp (OSM),street_lamp,14.6431769,121.1149357,24/7,,Metro Manila
+osm-lamp-node-12143818458,Street lamp (OSM),street_lamp,14.6431231,121.1160978,24/7,,Metro Manila
+osm-lamp-node-12153302814,Street lamp (OSM),street_lamp,14.6328182,121.0979138,24/7,,Metro Manila
+osm-lamp-node-12250223442,Street lamp (OSM),street_lamp,14.6420203,121.047727,24/7,,Metro Manila
+osm-lamp-node-12278006124,Street lamp (OSM),street_lamp,14.6303706,121.097829,24/7,,Metro Manila
+osm-cctv-node-12350528555,Security guard (OSM),surveillance,14.6450862,120.9945577,24/7,,Metro Manila
+osm-cctv-node-12378333460,CCTV (OSM),surveillance,14.6464926,120.9947209,24/7,,Metro Manila
+osm-lamp-node-12397609761,Street lamp (OSM),street_lamp,14.574285,121.0060645,24/7,,Metro Manila
+osm-police-node-12455553882,Santa Lucia Police Sub-station,police_station,14.5993087,121.0367776,24/7,V. P. Ibañez Street,Metro Manila
+osm-police-node-12455607701,Police station (OSM),police_station,14.6461959,121.0745912,24/7,,Metro Manila
+osm-cctv-node-12695904568,CCTV (OSM),surveillance,14.5827047,121.0994534,24/7,,Metro Manila
+osm-lamp-node-12741335539,Street lamp (OSM),street_lamp,14.6383649,121.116195,24/7,,Metro Manila
+osm-lamp-node-12747621670,Street lamp (OSM),street_lamp,14.6343634,121.1066003,24/7,,Metro Manila
+osm-lamp-node-12747640882,Street lamp (OSM),street_lamp,14.6235275,121.0986838,24/7,,Metro Manila
+osm-cctv-node-12755511655,CCTV (OSM),surveillance,14.6452181,120.9925026,24/7,,Metro Manila
+osm-lamp-node-12829475852,Street lamp (OSM),street_lamp,14.5762087,121.0566216,24/7,,Metro Manila
+osm-lamp-node-12882590186,Street lamp (OSM),street_lamp,14.649432,121.072116,24/7,,Metro Manila
+osm-lamp-node-12882636238,Street lamp (OSM),street_lamp,14.6486537,121.0726221,24/7,,Metro Manila
+osm-cctv-node-12987244393,CCTV (OSM),surveillance,14.6089752,121.0411107,24/7,,Metro Manila
+osm-lamp-node-13042374350,Street lamp (OSM),street_lamp,14.6379923,121.1133114,24/7,,Metro Manila
+osm-police-node-13164956573,Plaza Ruiz Outpost,police_station,14.6002556,120.9737829,24/7,,Metro Manila
+osm-lamp-node-13191744928,Street lamp (OSM),street_lamp,14.6547884,121.0581061,24/7,,Metro Manila
+osm-lamp-node-13192520984,Street lamp (OSM),street_lamp,14.6372931,121.0360113,24/7,,Metro Manila
+osm-cctv-node-13262595527,CCTV (OSM),surveillance,14.6570643,121.0568437,24/7,,Metro Manila
+osm-lamp-node-13414323064,Street lamp (OSM),street_lamp,14.5891813,120.986448,24/7,,Metro Manila
+osm-lamp-node-13420278858,Street lamp (OSM),street_lamp,14.5865538,120.9829429,24/7,,Metro Manila

@@ -201,7 +201,9 @@ export default function SafeMap({
       convenience_store: '🏪',
       security_post: '🛡️',
       hospital: '🏥',
-      fire_station: '🚒'
+      fire_station: '🚒',
+      street_lamp: '💡',
+      surveillance: '📹'
     }
 
     safeSpots.forEach(spot => {

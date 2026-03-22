@@ -3,6 +3,7 @@ from datetime import datetime
 from geopy.distance import geodesic
 from sqlalchemy.orm import Session
 from sklearn.neighbors import BallTree
+from app.config import SAFETY_IGNORE_CRIME, SAFETY_USE_OSM_FILE
 from app.models import CrimeIncident, SafeSpot
 from app.osm.geojson_osm import get_osm_geo_data
 
@@ -17,32 +18,37 @@ CRIME_WEIGHTS = {
 
 class SafetyScorer:
     """
-    Route safety model: weighted crime proximity, time-of-day risk, lighting,
-    foot-traffic proxy, DB safe spots, and OSM GeoJSON context (street lamps,
-    surveillance/CCTV, police station polygons) when data/export.geojson is present.
+    Route safety model: weighted crime proximity (optional), time-of-day risk, lighting,
+    foot-traffic proxy, and safe spots from the DB (including rows merged from
+    export.geojson). Separate OSM file bonuses apply only when SAFETY_USE_OSM_FILE=1
+    (avoid double-counting if GeoJSON is already merged into safe_spots.csv).
     """
 
     def __init__(self, db: Session):
         self.db = db
-        self._osm = get_osm_geo_data()
+        self._osm = get_osm_geo_data() if SAFETY_USE_OSM_FILE else None
         self._build_indices()
 
     def _build_indices(self):
-        incidents = self.db.query(CrimeIncident).all()
-        self._crime_rows = [
-            {
-                "lat": inc.latitude,
-                "lng": inc.longitude,
-                "type": (inc.incident_type or "theft").lower(),
-                "hour": int(inc.time_of_day.split(":")[0]) if inc.time_of_day else 12,
-            }
-            for inc in incidents
-        ]
-        if self._crime_rows:
-            rad = np.radians([[r["lat"], r["lng"]] for r in self._crime_rows])
-            self._crime_tree = BallTree(rad, metric="haversine")
-        else:
+        if SAFETY_IGNORE_CRIME:
+            self._crime_rows = []
             self._crime_tree = None
+        else:
+            incidents = self.db.query(CrimeIncident).all()
+            self._crime_rows = [
+                {
+                    "lat": inc.latitude,
+                    "lng": inc.longitude,
+                    "type": (inc.incident_type or "theft").lower(),
+                    "hour": int(inc.time_of_day.split(":")[0]) if inc.time_of_day else 12,
+                }
+                for inc in incidents
+            ]
+            if self._crime_rows:
+                rad = np.radians([[r["lat"], r["lng"]] for r in self._crime_rows])
+                self._crime_tree = BallTree(rad, metric="haversine")
+            else:
+                self._crime_tree = None
 
         spots = self.db.query(SafeSpot).all()
         self._spot_coords = [(s.latitude, s.longitude) for s in spots]
@@ -137,7 +143,7 @@ class SafetyScorer:
         Scale lighting penalty down when many street lamps are nearby (OSM).
         Returns 1.0 = no relief, down to ~0.28 when lamps are dense.
         """
-        if not self._osm.lamp_tree or not self._osm.lamp_coords:
+        if self._osm is None or not self._osm.lamp_tree or not self._osm.lamp_coords:
             return 1.0
         r_rad = radius_meters / 6371000.0
         q = np.radians([[lat, lng]])
@@ -152,7 +158,7 @@ class SafetyScorer:
         Distance-weighted bonus near mapped surveillance (CCTV, guards, etc.).
         Uses surveillance:type from OSM when present (camera vs guard).
         """
-        if not self._osm.surveillance_tree or not self._osm.surveillance_rows:
+        if self._osm is None or not self._osm.surveillance_tree or not self._osm.surveillance_rows:
             return 0.0
         r_rad = radius_meters / 6371000.0
         q = np.radians([[lat, lng]])
@@ -167,7 +173,7 @@ class SafetyScorer:
 
     def _osm_police_bonus(self, lat, lng, radius_meters=200):
         """Extra boost near police polygons from OSM (centroids), capped to limit overlap with DB spots."""
-        if not self._osm.police_tree or not self._osm.police_centroids:
+        if self._osm is None or not self._osm.police_tree or not self._osm.police_centroids:
             return 0.0
         r_rad = radius_meters / 6371000.0
         q = np.radians([[lat, lng]])

@@ -1,11 +1,19 @@
 import requests
 import os
 from dotenv import load_dotenv
+from geopy.distance import geodesic
 
 load_dotenv()
 
 ORS_API_KEY = os.getenv("OPENROUTESERVICE_API_KEY")
 ORS_BASE_URL = "https://api.openrouteservice.org/v2/directions/foot-walking"
+
+# ORS foot-walking rejects routes whose approximated distance exceeds ~150 km.
+# Walking paths are longer than straight-line; use a conservative straight-line cap.
+MAX_STRAIGHT_LINE_METERS = 130_000  # stay under ORS route limit
+# Beyond this, request only one route (alternatives can push ORS over the limit).
+MAX_STRAIGHT_FOR_MULTI_ROUTE_M = 50_000
+
 
 def get_walking_routes(start_coords, end_coords, alternatives=2):
     """
@@ -14,35 +22,51 @@ def get_walking_routes(start_coords, end_coords, alternatives=2):
     Args:
         start_coords: [longitude, latitude]
         end_coords: [longitude, latitude]
-        alternatives: Number of alternative routes (max 3)
+        alternatives: Desired alternative route count (may be reduced for long trips)
     
     Returns:
         List of route geometries and metadata
     """
     if not ORS_API_KEY:
         raise Exception("OPENROUTESERVICE_API_KEY not set in environment")
-    
+
+    lng1, lat1 = start_coords
+    lng2, lat2 = end_coords
+    straight_m = geodesic((lat1, lng1), (lat2, lng2)).meters
+
+    if straight_m > MAX_STRAIGHT_LINE_METERS:
+        raise ValueError(
+            "Start and end are too far apart for walking directions (max about "
+            "130 km straight-line). Choose closer points in Metro Manila."
+        )
+
+    # Long trips: single route only — avoids ORS 400 "approximated route distance > 150000 m"
+    target_count = 1 if straight_m > MAX_STRAIGHT_FOR_MULTI_ROUTE_M else min(
+        max(1, alternatives), 3
+    )
+
     headers = {
         'Authorization': ORS_API_KEY,
         'Content-Type': 'application/json'
     }
-    
+
     body = {
         'coordinates': [start_coords, end_coords],
-        'alternative_routes': {
-            'target_count': alternatives,
-            'share_factor': 0.6,
-            'weight_factor': 1.4
-        },
         'geometry': True,
         'instructions': True,
         'elevation': False
     }
-    
+    if target_count > 1:
+        body['alternative_routes'] = {
+            'target_count': target_count,
+            'share_factor': 0.6,
+            'weight_factor': 1.4
+        }
+
     response = requests.post(ORS_BASE_URL, json=body, headers=headers)
-    
+
     if response.status_code != 200:
-        raise Exception(f"ORS API error {response.status_code}: {response.text}")
+        raise _ors_routing_error(response)
     
     data = response.json()
     routes = []
@@ -55,6 +79,26 @@ def get_walking_routes(start_coords, end_coords, alternatives=2):
         })
     
     return routes
+
+
+def _ors_routing_error(response: requests.Response) -> Exception:
+    """Map ORS HTTP errors to friendly messages (e.g. 150 km walking limit)."""
+    try:
+        j = response.json()
+        err = j.get("error")
+        if isinstance(err, dict):
+            code = err.get("code")
+            msg = err.get("message", "")
+            if response.status_code == 400 and code == 2004:
+                return ValueError(
+                    "Walking route is too long for the routing service (max ~150 km). "
+                    "Pick start and end points closer together in Metro Manila."
+                )
+            if msg:
+                return Exception(f"ORS API error {response.status_code}: {msg}")
+    except Exception:
+        pass
+    return Exception(f"ORS API error {response.status_code}: {response.text}")
 
 
 # Test function
