@@ -1,0 +1,34 @@
+.map-page {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 64px);
+  overflow: hidden;
+}
+
+.map-area {
+  position: relative;
+  flex: 1;
+}
+
+.map-controls {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .map-page {
+    flex-direction: column;
+    height: auto;
+  }
+  .map-area {
+    height: 50vh;
+  }
+  .map-controls {
+    top: 8px;
+    right: 8px;
+  }
+}
