@@ -1,6 +1,13 @@
 import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+/**
+ * Local dev: leave `VITE_API_URL` unset (or empty) so requests use the Vite dev server
+ * proxy (`vite.config.js` → http://localhost:8000). Set `VITE_API_URL` only if you want
+ * to call the API directly (then CORS on the backend must allow localhost:5173).
+ * Production builds (Vercel): `VITE_API_URL` must be your deployed API URL at build time.
+ */
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || (import.meta.env.DEV ? '' : '')
 
 const api = axios.create({
   baseURL: API_BASE_URL,

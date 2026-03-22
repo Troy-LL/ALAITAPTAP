@@ -30,6 +30,8 @@ Built for the **AIRA Youth Challenge 2026** (MVP).
 
 ## Local development
 
+Step-by-step (including **empty `VITE_API_URL`** for the dev proxy) is in **[LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md)**. That file also explains **how to revert to production** (Vercel `VITE_API_URL`, redeploy) when local work is done.
+
 **Backend** — from `saferoute-backend/`:
 
 1. Create a virtual environment and install dependencies: `pip install -r requirements.txt`
@@ -41,7 +43,7 @@ Built for the **AIRA Youth Challenge 2026** (MVP).
 **Frontend** — from `saferoute-frontend/`:
 
 1. `npm install`
-2. Copy `.env.example` to `.env` and set `VITE_API_URL` to your API (Railway URL in production).
+2. Copy `.env.example` to `.env`. For **local dev**, leave `VITE_API_URL` **empty** so Vite proxies `/api` to `localhost:8000`, or set `VITE_API_URL` to your API (Railway URL for production builds on Vercel).
 3. `npm run dev` (default Vite dev server, often `http://localhost:5173`).
 
 ## Deployment (target)
