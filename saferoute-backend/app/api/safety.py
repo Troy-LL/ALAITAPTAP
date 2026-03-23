@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import CrimeIncident
-from app.ml.safety_scorer import SafetyScorer
+from app.ml.safety_scorer import CRIME_WEIGHTS, SafetyScorer, _normalize_crime_type
 from typing import List, Optional
 from pydantic import BaseModel
 from datetime import datetime
@@ -24,12 +24,19 @@ class DangerHeatmapPoint(BaseModel):
     intensity: float  # 0.0–1.0
 
 
-INTENSITY_BY_TYPE = {
-    "robbery": 1.0,
-    "assault": 0.9,
-    "harassment": 0.6,
-    "theft": 0.5,
-}
+def _incident_heatmap_intensity(incident_type: str) -> float:
+    """
+    Scale 0-1 intensity from normalized crime severity used by SafetyScorer.
+    Keeps API heatmaps and route scoring aligned.
+    """
+    key = _normalize_crime_type(incident_type or "other")
+    min_w = min(CRIME_WEIGHTS.values())
+    max_w = max(CRIME_WEIGHTS.values())
+    weight = CRIME_WEIGHTS.get(key, CRIME_WEIGHTS["other"])
+    if max_w <= min_w:
+        return 0.55
+    normalized = (weight - min_w) / (max_w - min_w)
+    return round(0.35 + (normalized * 0.65), 3)
 
 
 @router.get("/danger-heatmap", response_model=List[DangerHeatmapPoint])
@@ -53,8 +60,7 @@ def get_danger_heatmap(
             diff = min(diff, 24 - diff)
             if diff > 3:
                 continue
-        t = (inc.incident_type or "theft").lower()
-        intensity = INTENSITY_BY_TYPE.get(t, 0.5)
+        intensity = _incident_heatmap_intensity(inc.incident_type or "theft")
         out.append(
             DangerHeatmapPoint(
                 lat=inc.latitude,
@@ -82,12 +88,12 @@ def get_heatmap_data(
         CrimeIncident.longitude.between(lng_min, lng_max)
     ).all()
 
-    # Return individual crime points for heatmap
+    # Return individual crime points for heatmap with severity-based intensity
     return [
         HeatmapPoint(
             lat=inc.latitude,
             lng=inc.longitude,
-            intensity=0.8,  # Default intensity; can be varied by incident type
+            intensity=_incident_heatmap_intensity(inc.incident_type or "other"),
             incident_count=1
         )
         for inc in incidents

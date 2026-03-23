@@ -7,21 +7,70 @@ from app.config import SAFETY_IGNORE_CRIME, SAFETY_USE_OSM_FILE
 from app.models import CrimeIncident, SafeSpot
 from app.osm.geojson_osm import get_osm_geo_data
 
-# Severity weights (higher = more impact on perceived risk)
+# Severity weights (higher = more impact on perceived risk). Keys match _normalize_crime_type().
 CRIME_WEIGHTS = {
     "assault": 1.4,
     "robbery": 1.2,
     "harassment": 1.0,
     "theft": 0.7,
+    "serious_crime": 1.35,
+    "vehicular": 0.55,
+    "other": 1.0,
+}
+
+
+def _normalize_crime_type(raw: str) -> str:
+    """Map free-text incident labels (CSV / news) onto CRIME_WEIGHTS keys."""
+    t = (raw or "").lower()
+    if any(k in t for k in ("robbery", "holdup", "snatch", "jewelry")):
+        return "robbery"
+    if any(
+        k in t
+        for k in (
+            "assault",
+            "brawl",
+            "injury",
+            "battery",
+            "physical",
+            "siege",
+            "trespass",
+        )
+    ):
+        return "assault"
+    if any(k in t for k in ("harass", "stalk", "cruelty")):
+        return "harassment"
+    if any(k in t for k in ("theft", "steal", "pickpocket", "burglary", "house robbery")):
+        return "theft"
+    if any(k in t for k in ("kidnap", "homicide", "murder", "shooting", "armed siege")):
+        return "serious_crime"
+    if any(k in t for k in ("drug", "shabu", "seizure", "smuggling")):
+        return "serious_crime"
+    if "crash" in t or "vehicular" in t:
+        return "vehicular"
+    return "other"
+
+
+# Distance-weighted contribution per safe-spot type (police / hospitals matter more than lamps)
+SPOT_BONUS_WEIGHT = {
+    "police_station": 6.5,
+    "hospital": 5.5,
+    "fire_station": 5.0,
+    "security_post": 4.0,
+    "surveillance": 3.8,
+    "convenience_store": 2.9,
+    "street_lamp": 1.6,
 }
 
 
 class SafetyScorer:
     """
     Route safety model: weighted crime proximity (optional), time-of-day risk, lighting,
-    foot-traffic proxy, and safe spots from the DB (including rows merged from
-    export.geojson). Separate OSM file bonuses apply only when SAFETY_USE_OSM_FILE=1
-    (avoid double-counting if GeoJSON is already merged into safe_spots.csv).
+    foot-traffic proxy, and safe spots from the DB.
+
+    Safe spots come from ``safe_spots.csv`` (seeded into ``SafeSpot``), typically built from
+    ``fetch_safe_spots`` / hand data plus ``merge_safety_cleaned_into_safe_spots.py`` (OSM
+    ``safety_data_cleaned.csv``). Optional GeoJSON bonuses use ``SAFETY_USE_OSM_FILE=1`` so
+    lamps/CCTV from ``export.geojson`` are not double-counted if already merged into the CSV.
     """
 
     def __init__(self, db: Session):
@@ -39,7 +88,7 @@ class SafetyScorer:
                 {
                     "lat": inc.latitude,
                     "lng": inc.longitude,
-                    "type": (inc.incident_type or "theft").lower(),
+                    "type": _normalize_crime_type(inc.incident_type or "theft"),
                     "hour": int(inc.time_of_day.split(":")[0]) if inc.time_of_day else 12,
                 }
                 for inc in incidents
@@ -51,7 +100,15 @@ class SafetyScorer:
                 self._crime_tree = None
 
         spots = self.db.query(SafeSpot).all()
-        self._spot_coords = [(s.latitude, s.longitude) for s in spots]
+        self._spot_rows = [
+            {
+                "lat": float(s.latitude),
+                "lng": float(s.longitude),
+                "type": (s.type or "convenience_store").strip().lower(),
+            }
+            for s in spots
+        ]
+        self._spot_coords = [(r["lat"], r["lng"]) for r in self._spot_rows]
         if self._spot_coords:
             self._spot_tree = BallTree(
                 np.radians(self._spot_coords), metric="haversine"
@@ -122,21 +179,28 @@ class SafetyScorer:
         for j in idx:
             row = self._crime_rows[j]
             dist_m = geodesic((lat, lng), (row["lat"], row["lng"])).meters
-            w = CRIME_WEIGHTS.get(row["type"], 1.0)
+            w = CRIME_WEIGHTS.get(row["type"], CRIME_WEIGHTS["other"])
             # Smoother decay than hard count: full weight inside ~50m, taper by distance
             decay = 1.0 / (1.0 + (dist_m / 80.0) ** 2)
             load += w * decay
         return load
 
     def _safe_spot_bonus(self, lat, lng, radius_meters=180):
-        """Small safety boost near police / 24h stores / hospitals."""
-        if not self._spot_tree or not self._spot_coords:
+        """Distance-weighted boost near safe infrastructure (type-aware)."""
+        if not self._spot_tree or not self._spot_rows:
             return 0.0
 
         r_rad = radius_meters / 6371000.0
         q = np.radians([[lat, lng]])
-        n = len(self._spot_tree.query_radius(q, r=r_rad)[0])
-        return min(18.0, n * 5.5)
+        idx = self._spot_tree.query_radius(q, r=r_rad)[0]
+        total = 0.0
+        for j in idx:
+            row = self._spot_rows[j]
+            dist_m = geodesic((lat, lng), (row["lat"], row["lng"])).meters
+            decay = 1.0 / (1.0 + (dist_m / 100.0) ** 2)
+            w = SPOT_BONUS_WEIGHT.get(row["type"], 3.2)
+            total += w * decay
+        return min(24.0, total)
 
     def _osm_lamp_lighting_factor(self, lat, lng, radius_meters=90):
         """

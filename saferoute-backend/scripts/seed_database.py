@@ -1,15 +1,19 @@
 """
 Database seeding script: loads CSV data into the database.
-Run AFTER generating CSVs with scrape_crime_data.py and fetch_safe_spots.py.
 
-To merge OSM export.geojson into safe_spots.csv (street lamps, CCTV, police):
-    python data/merge_export_geojson_into_safe_spots.py
+Expected inputs (data/):
+  - crime_incidents.csv — built via data/merge_crime_incidents.py (Manila/QC + routing CSV)
+  - safe_spots.csv — hand / fetch_safe_spots baseline, then optionally:
+      data/merge_safety_cleaned_into_safe_spots.py (OSM safety_data_cleaned.csv)
+      data/merge_export_geojson_into_safe_spots.py (export.geojson lamps/CCTV/police)
 
-Usage (from saferoute-backend/):
-    python scripts/seed_database.py
+Full pipeline (from saferoute-backend/):
+  python scripts/reseed_data.py
+
+Or only seed:
+  python scripts/seed_database.py
 """
 import sys
-import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
