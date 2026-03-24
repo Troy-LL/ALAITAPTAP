@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet.heat'
@@ -18,9 +18,28 @@ L.Icon.Default.mergeOptions({
 
 // Metro Manila center
 const METRO_MANILA = [14.5995, 121.0175]
+const SAFE_SPOT_MIN_ZOOM = 14
+const TILE_LAYER_CONFIG = {
+  transit: {
+    url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    options: {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 20
+    }
+  },
+  satellite: {
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    options: {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; Esri',
+      maxZoom: 20
+    }
+  }
+}
 
 export default function SafeMap({
   routes,
+  baseMapMode = 'transit',
   heatmapData,
   safeSpots,
   onMapClick,
@@ -28,12 +47,14 @@ export default function SafeMap({
   endMarker,
   highlightedRouteIndex = 0,
 }) {
+  const [mapZoom, setMapZoom] = useState(13)
   const mapRef = useRef(null)
   const mapInstance = useRef(null)
   const routeLayers = useRef([])
   const heatLayer = useRef(null)
   const spotsLayer = useRef([])
   const endpointMarkers = useRef([])
+  const baseLayerRef = useRef(null)
 
   // Initialize map
   useEffect(() => {
@@ -45,27 +66,35 @@ export default function SafeMap({
       zoomControl: true,
     })
 
-    // Dark tile layer from CartoDB
-    L.tileLayer(
-      'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-      {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 20
-      }
-    ).addTo(map)
-
-    map.on('click', (e) => {
-      if (onMapClick) onMapClick(e.latlng)
-    })
+    const initialLayerConfig = TILE_LAYER_CONFIG.transit
+    baseLayerRef.current = L.tileLayer(initialLayerConfig.url, initialLayerConfig.options).addTo(map)
 
     mapInstance.current = map
+    setMapZoom(map.getZoom())
+
+    const handleZoomEnd = () => setMapZoom(map.getZoom())
+    map.on('zoomend', handleZoomEnd)
 
     return () => {
+      map.off('zoomend', handleZoomEnd)
       map.remove()
       mapInstance.current = null
     }
   }, [])
+
+  // Switch basemap style
+  useEffect(() => {
+    const map = mapInstance.current
+    if (!map) return
+
+    if (baseLayerRef.current) {
+      map.removeLayer(baseLayerRef.current)
+      baseLayerRef.current = null
+    }
+
+    const nextLayerConfig = TILE_LAYER_CONFIG[baseMapMode] || TILE_LAYER_CONFIG.transit
+    baseLayerRef.current = L.tileLayer(nextLayerConfig.url, nextLayerConfig.options).addTo(map)
+  }, [baseMapMode])
 
   // Update click handler when callback changes
   useEffect(() => {
@@ -195,31 +224,33 @@ export default function SafeMap({
     spotsLayer.current = []
 
     if (!safeSpots || safeSpots.length === 0) return
+    if (mapZoom < SAFE_SPOT_MIN_ZOOM) return
 
     const TYPE_ICONS = {
-      police_station: '🚔',
-      convenience_store: '🏪',
-      security_post: '🛡️',
-      hospital: '🏥',
-      fire_station: '🚒',
-      street_lamp: '💡',
-      surveillance: '📹'
+      police_station: { label: 'Police Station', color: '#3b82f6' },
+      convenience_store: { label: 'Convenience Store', color: '#f59e0b' },
+      security_post: { label: 'Security Post', color: '#10b981' },
+      hospital: { label: 'Hospital', color: '#ef4444' },
+      fire_station: { label: 'Fire Station', color: '#f97316' },
+      street_lamp: { label: 'Street Lamp', color: '#eab308' },
+      surveillance: { label: 'Surveillance', color: '#8b5cf6' },
     }
+    const dotRadius = Math.min(6, Math.max(3, mapZoom - 10))
 
     safeSpots.forEach(spot => {
-      const emoji = TYPE_ICONS[spot.type] || '📍'
-      const icon = L.divIcon({
-        html: `<div class="safe-spot-marker">${emoji}</div>`,
-        className: '',
-        iconSize: [32, 32],
-        iconAnchor: [16, 16]
+      const typeMeta = TYPE_ICONS[spot.type] || { label: 'Safe Spot', color: '#22c55e' }
+      const marker = L.circleMarker([spot.lat, spot.lng], {
+        radius: dotRadius,
+        color: 'rgba(12, 17, 24, 0.95)',
+        weight: 1.5,
+        fillColor: typeMeta.color,
+        fillOpacity: 0.95,
       })
-      const marker = L.marker([spot.lat, spot.lng], { icon })
         .addTo(map)
         .bindPopup(`
           <div class="spot-popup">
-            <strong>${emoji} ${spot.name}</strong><br/>
-            <span style="color: #8B949E;">${String(spot.type || '').replace(/_/g, ' ')}</span><br/>
+            <strong>${spot.name}</strong><br/>
+            <span style="color: ${typeMeta.color};">${typeMeta.label}</span><br/>
             ${spot.address ? `📌 ${spot.address}<br/>` : ''}
             🕐 ${spot.hours || '—'}<br/>
             📍 ${spot.city || ''}
@@ -228,7 +259,7 @@ export default function SafeMap({
         `)
       spotsLayer.current.push(marker)
     })
-  }, [safeSpots])
+  }, [safeSpots, mapZoom])
 
   // Start / end markers (geocoded search points)
   useEffect(() => {
