@@ -28,12 +28,12 @@ def send_buddy_alert(user_name, current_location, destination, buddy_phone, trac
 
     client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
-    message_body = f"""SafeRoute Alert: {user_name} is walking from {current_location['address']} to {destination}.
+    message_body = f"""ALAITAPTAP Alert: {user_name} is walking from {current_location['address']} to {destination}.
 
 Current location: ({current_location['lat']:.6f}, {current_location['lng']:.6f})
 Track: {tracking_url}
 
-This is an automated message from SafeRoute."""
+This is an automated message from ALAITAPTAP."""
 
     message = client.messages.create(
         body=message_body,

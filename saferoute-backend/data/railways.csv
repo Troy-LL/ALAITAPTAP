@@ -1,0 +1,103 @@
+name,line,lat,lon,city,status
+Fernando Poe Jr.,LRT-1,14.6575,121.0211,Quezon City,Operational
+Balintawak,LRT-1,14.6577,121.0039,Quezon City,Operational
+Monumento,LRT-1,14.6542,120.9838,Caloocan,Operational
+5th Avenue,LRT-1,14.6444,120.9835,Caloocan,Operational
+R. Papa,LRT-1,14.6360,120.9827,Manila,Operational
+Abad Santos,LRT-1,14.6304,120.9813,Manila,Operational
+Blumentritt,LRT-1,14.6227,120.9828,Manila,Operational
+Tayuman,LRT-1,14.6167,120.9832,Manila,Operational
+Bambang,LRT-1,14.6111,120.9832,Manila,Operational
+Doroteo Jose,LRT-1,14.6054,120.9818,Manila,Operational
+Carriedo,LRT-1,14.5996,120.9814,Manila,Operational
+Central Terminal,LRT-1,14.5925,120.9817,Manila,Operational
+United Nations,LRT-1,14.5826,120.9846,Manila,Operational
+Pedro Gil,LRT-1,14.5768,120.9883,Manila,Operational
+Quirino,LRT-1,14.5703,120.9913,Manila,Operational
+Vito Cruz,LRT-1,14.5633,120.9947,Manila,Operational
+Gil Puyat,LRT-1,14.5540,120.9972,Pasay,Operational
+Libertad,LRT-1,14.5476,120.9985,Pasay,Operational
+EDSA,LRT-1,14.5377,121.0003,Pasay,Operational
+Baclaran,LRT-1,14.5343,120.9983,Pasay,Operational
+Redemptorist-Aseana,LRT-1,14.5298,120.9940,Parañaque,Operational
+MIA Road,LRT-1,14.5190,120.9945,Parañaque,Operational
+Asiaworld (PITX),LRT-1,14.5118,120.9958,Parañaque,Operational
+Ninoy Aquino,LRT-1,14.5020,120.9978,Parañaque,Operational
+Dr. Santos,LRT-1,14.4925,121.0011,Parañaque,Operational
+Recto,LRT-2,14.6038,120.9839,Manila,Operational
+Legarda,LRT-2,14.6010,120.9918,Manila,Operational
+Pureza,LRT-2,14.6018,121.0050,Manila,Operational
+V. Mapa,LRT-2,14.6042,121.0180,Manila,Operational
+J. Ruiz,LRT-2,14.6105,121.0255,San Juan,Operational
+Gilmore,LRT-2,14.6135,121.0345,Quezon City,Operational
+Betty Go-Belmonte,LRT-2,14.6186,121.0435,Quezon City,Operational
+Araneta Center-Cubao (LRT2),LRT-2,14.6224,121.0526,Quezon City,Operational
+Anonas,LRT-2,14.6281,121.0645,Quezon City,Operational
+Katipunan,LRT-2,14.6318,121.0734,Quezon City,Operational
+Santolan,LRT-2,14.6219,121.0858,Pasig,Operational
+Marikina-Pasig,LRT-2,14.6190,121.1011,Marikina,Operational
+Antipolo,LRT-2,14.6248,121.1215,Antipolo,Operational
+North Avenue,MRT-3,14.6521,121.0323,Quezon City,Operational
+Quezon Avenue,MRT-3,14.6425,121.0378,Quezon City,Operational
+GMA-Kamuning,MRT-3,14.6353,121.0433,Quezon City,Operational
+Araneta Center-Cubao (MRT3),MRT-3,14.6195,121.0511,Quezon City,Operational
+Santolan-Annapolis,MRT-3,14.6078,121.0564,Quezon City,Operational
+Ortigas,MRT-3,14.5878,121.0567,Mandaluyong,Operational
+Shaw Boulevard,MRT-3,14.5813,121.0536,Mandaluyong,Operational
+Boni,MRT-3,14.5739,121.0481,Mandaluyong,Operational
+Guadalupe,MRT-3,14.5673,121.0455,Makati,Operational
+Buendia,MRT-3,14.5542,121.0321,Makati,Operational
+Ayala,MRT-3,14.5491,121.0278,Makati,Operational
+Magallanes,MRT-3,14.5420,121.0195,Makati,Operational
+Taft Avenue,MRT-3,14.5376,121.0013,Pasay,Operational
+North Avenue (MRT7),MRT-7,14.6534,121.0305,Quezon City,Testing
+Quezon Memorial Circle,MRT-7,14.6522,121.0475,Quezon City,Testing
+University Avenue,MRT-7,14.6558,121.0601,Quezon City,Testing
+Tandang Sora,MRT-7,14.6645,121.0664,Quezon City,Testing
+Don Antonio,MRT-7,14.6801,121.0768,Quezon City,Testing
+Batasan,MRT-7,14.6912,121.0845,Quezon City,Testing
+Manggahan,MRT-7,14.7005,121.0912,Quezon City,Testing
+Doña Carmen,MRT-7,14.7121,121.1001,Quezon City,Testing
+Regalado,MRT-7,14.7225,121.0855,Quezon City,Testing
+Mindanao Avenue,MRT-7,14.7335,121.0741,Quezon City,Testing
+Quirino,MRT-7,14.7441,121.0632,Quezon City,Testing
+Sacred Heart,MRT-7,14.7538,121.0850,Quezon City,Testing
+Tala,MRT-7,14.7712,121.0950,Caloocan,Construction
+San Jose del Monte,MRT-7,14.8055,121.0455,Bulacan,Construction
+East Valenzuela,Subway,14.7061,121.0025,Valenzuela,Construction
+Quirino Highway (Subway),Subway,14.6958,121.0321,Quezon City,Construction
+Tandang Sora (Subway),Subway,14.6732,121.0365,Quezon City,Construction
+North Avenue (Subway),Subway,14.6541,121.0315,Quezon City,Construction
+Quezon Avenue (Subway),Subway,14.6432,121.0381,Quezon City,Construction
+East Avenue,Subway,14.6385,121.0482,Quezon City,Construction
+Anonas (Subway),Subway,14.6288,121.0635,Quezon City,Construction
+Katipunan (Subway),Subway,14.6325,121.0745,Quezon City,Construction
+Ortigas (Subway),Subway,14.5875,121.0642,Pasig,Construction
+Shaw Boulevard (Subway),Subway,14.5791,121.0581,Pasig,Construction
+Kalayaan Avenue,Subway,14.5601,121.0452,Taguig,Construction
+BGC Station,Subway,14.5512,121.0501,Taguig,Construction
+Lawton Avenue,Subway,14.5325,121.0351,Taguig,Construction
+Senate-DepEd,Subway,14.5201,121.0255,Pasay,Construction
+FTI (Subway),Subway,14.5055,121.0425,Taguig,Construction
+Bicutan (Subway),Subway,14.4845,121.0465,Parañaque,Construction
+NAIA Terminal 3,Subway,14.5245,121.0155,Pasay,Construction
+Tutuban,PNR,14.6085,120.9731,Manila,Operational`
+Blumentritt (PNR),PNR,14.6231,120.9825,Manila,Operational
+Laon Laan,PNR,14.6135,120.9882,Manila,Operational
+España,PNR,14.6075,120.9935,Manila,Operational
+Sta. Mesa,PNR,14.5985,121.0112,Manila,Operational
+Pandacan,PNR,14.5882,121.0085,Manila,Operational
+Paco,PNR,14.5795,121.0021,Manila,Operational
+San Andres,PNR,14.5712,121.0011,Manila,Operational
+Vito Cruz (PNR),PNR,14.5621,120.9995,Manila,Operational
+Buendia (PNR),PNR,14.5512,121.0075,Makati,Operational
+Pasay Road,PNR,14.5445,121.0135,Makati,Operational
+EDSA (PNR),PNR,14.5385,121.0201,Makati,Operational
+Nichols,PNR,14.5195,121.0345,Taguig,Operational
+FTI (PNR),PNR,14.5061,121.0435,Taguig,Operational
+Bicutan (PNR),PNR,14.4845,121.0475,Parañaque,Operational
+Sucat,PNR,14.4512,121.0485,Muntinlupa,Operational
+Alabang,PNR,14.4175,121.0481,Muntinlupa,Operational
+Muntinlupa,PNR,14.3812,121.0451,Muntinlupa,Operational
+San Pedro,PNR,14.3512,121.0551,Laguna,Operational
+Pacita Main Gate,PNR,14.3412,121.0612,Laguna,Operational

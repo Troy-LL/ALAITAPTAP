@@ -1,36 +1,66 @@
-import { useState } from 'react'
-import { sendBuddyAlert as postBuddyAlert } from '../services/api'
-import './RoutePlanner.css'
+import { useState, type FormEvent } from 'react'
+import { Loader2, Siren } from 'lucide-react'
+import { toast } from 'sonner'
+
+import { sendBuddyAlert } from '@/services/api'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+
+interface RouteContext {
+  start: { lat: number; lng: number }
+  end: { lat: number; lng: number }
+  startLabel: string
+  endLabel: string
+}
+
+interface BuddyAlertProps {
+  routeContext: RouteContext | null
+  disabled?: boolean
+}
 
 const PH_REGEX = /^\+639\d{9}$/
 
-export default function BuddyAlert({
-  routeContext,
-  disabled,
-}) {
+export default function BuddyAlert({ routeContext, disabled }: BuddyAlertProps) {
+  const [open, setOpen] = useState(false)
   const [buddyPhone, setBuddyPhone] = useState('')
   const [userName, setUserName] = useState('')
-  const [showModal, setShowModal] = useState(false)
   const [sending, setSending] = useState(false)
 
-  const handleSendAlert = async () => {
+  const handleOpenChange = (next: boolean) => {
+    if (sending && !next) return
+    setOpen(next)
+  }
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+
     if (!userName.trim()) {
-      alert('Please enter your name')
+      toast.error('Please enter your name')
       return
     }
     if (!buddyPhone.trim()) {
-      alert('Please enter your buddy phone number')
+      toast.error('Please enter your buddy phone number')
       return
     }
     const normalized = buddyPhone.replace(/\s/g, '')
     if (!PH_REGEX.test(normalized)) {
-      alert('Phone must be in format: +639XXXXXXXXX')
+      toast.error('Phone must be in format: +639XXXXXXXXX')
       return
     }
 
     setSending(true)
     try {
-      await postBuddyAlert({
+      await sendBuddyAlert({
         user_name: userName.trim(),
         current_lat: routeContext?.start?.lat ?? 14.5995,
         current_lng: routeContext?.start?.lng ?? 121.0175,
@@ -38,14 +68,18 @@ export default function BuddyAlert({
         destination: routeContext?.endLabel || 'Destination',
         buddy_phone: normalized,
       })
-      setShowModal(false)
+      setOpen(false)
       setBuddyPhone('')
-      alert('Alert sent successfully. Your buddy has been notified.')
-    } catch (err) {
-      const d = err.response?.data?.detail
-      alert(
+      toast.success('Alert sent successfully. Your buddy has been notified.')
+    } catch (err: unknown) {
+      const axiosErr = err as {
+        response?: { data?: { detail?: string } }
+        message?: string
+      }
+      const d = axiosErr.response?.data?.detail
+      toast.error(
         'Failed to send alert: ' +
-          (typeof d === 'string' ? d : err.message || 'Please try again.')
+          (typeof d === 'string' ? d : axiosErr.message || 'Please try again.')
       )
     } finally {
       setSending(false)
@@ -53,84 +87,78 @@ export default function BuddyAlert({
   }
 
   return (
-    <>
-      <button
-        type="button"
-        className="btn btn-danger"
-        style={{ width: '100%', marginTop: '8px' }}
-        onClick={() => setShowModal(true)}
-        disabled={disabled}
-        id="buddy-alert-btn"
-        aria-label="Send emergency SMS to a buddy with your location"
-      >
-        🆘 Alert Emergency Buddy
-      </button>
-
-      {showModal && (
-        <div
-          className="modal-overlay"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="buddy-alert-title"
-          onClick={() => !sending && setShowModal(false)}
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <DialogTrigger asChild>
+        <Button
+          type="button"
+          variant="destructive"
+          className="mt-2 w-full"
+          disabled={disabled}
+          id="buddy-alert-btn"
+          aria-label="Send emergency SMS to a buddy with your location"
         >
-          <div className="modal-box" onClick={e => e.stopPropagation()}>
-            <h3 id="buddy-alert-title">🆘 Send Buddy Alert</h3>
-            <p>
-              Your buddy will receive an SMS with your start location and destination.
-            </p>
+          <Siren className="size-4" aria-hidden />
+          Alert Emergency Buddy
+        </Button>
+      </DialogTrigger>
+      <DialogContent
+        onPointerDownOutside={e => sending && e.preventDefault()}
+        onEscapeKeyDown={e => sending && e.preventDefault()}
+      >
+        <DialogHeader>
+          <DialogTitle>Send Buddy Alert</DialogTitle>
+          <DialogDescription>
+            Your buddy will receive an SMS with your start location and destination.
+          </DialogDescription>
+        </DialogHeader>
 
-            <div className="field">
-              <label className="field-label" htmlFor="buddy-name-input">
-                Your name
-              </label>
-              <input
-                id="buddy-name-input"
-                className="input"
-                placeholder="e.g. Maria Santos"
-                value={userName}
-                onChange={e => setUserName(e.target.value)}
-                autoComplete="name"
-                aria-label="Your name"
-              />
-            </div>
-            <div className="field">
-              <label className="field-label" htmlFor="buddy-phone-input">
-                Buddy phone (Philippines)
-              </label>
-              <input
-                id="buddy-phone-input"
-                className="input"
-                type="tel"
-                placeholder="+639XXXXXXXXX"
-                value={buddyPhone}
-                onChange={e => setBuddyPhone(e.target.value)}
-                autoComplete="tel"
-                aria-label="Buddy phone number"
-              />
-            </div>
-
-            <div className="modal-actions">
-              <button
-                type="button"
-                className="btn btn-glass"
-                onClick={() => setShowModal(false)}
-                disabled={sending}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="btn btn-danger"
-                onClick={handleSendAlert}
-                disabled={sending}
-              >
-                {sending ? 'Sending…' : 'Send alert'}
-              </button>
-            </div>
+        <form onSubmit={handleSubmit} className="grid gap-4">
+          <div className="grid gap-2">
+            <Label htmlFor="buddy-name-input">Your name</Label>
+            <Input
+              id="buddy-name-input"
+              placeholder="e.g. Maria Santos"
+              value={userName}
+              onChange={e => setUserName(e.target.value)}
+              autoComplete="name"
+              aria-label="Your name"
+            />
           </div>
-        </div>
-      )}
-    </>
+          <div className="grid gap-2">
+            <Label htmlFor="buddy-phone-input">Buddy phone (Philippines)</Label>
+            <Input
+              id="buddy-phone-input"
+              type="tel"
+              placeholder="+639XXXXXXXXX"
+              value={buddyPhone}
+              onChange={e => setBuddyPhone(e.target.value)}
+              autoComplete="tel"
+              aria-label="Buddy phone number"
+            />
+          </div>
+
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => handleOpenChange(false)}
+              disabled={sending}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" variant="destructive" disabled={sending}>
+              {sending ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" aria-hidden />
+                  Sending…
+                </>
+              ) : (
+                'Send alert'
+              )}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   )
 }

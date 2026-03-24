@@ -5,7 +5,7 @@ from app.models import Base
 from app.config import CORS_ORIGINS
 
 app = FastAPI(
-    title="SafeRoute API",
+    title="ALAITAPTAP API",
     version="1.0.0",
     description="Safe walking route planner for Metro Manila - AIRA Youth Challenge 2026"
 )
@@ -30,7 +30,7 @@ app.include_router(spots.router, prefix="/api", tags=["safe-spots"])
 
 @app.get("/")
 def health_check():
-    return {"status": "ok", "version": "1.0.0", "project": "SafeRoute"}
+    return {"status": "ok", "version": "1.0.0", "project": "ALAITAPTAP"}
 
 @app.get("/health")
 def health():

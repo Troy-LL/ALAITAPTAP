@@ -88,7 +88,7 @@ def main() -> int:
 
         client = Client(sid, token)
         msg = client.messages.create(
-            body="SafeRoute: Twilio test message.",
+            body="ALAITAPTAP: Twilio test message.",
             from_=from_num,
             to=to,
         )

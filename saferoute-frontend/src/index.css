@@ -1,271 +1,221 @@
-/* ===== CSS Reset & Design Tokens ===== */
-:root {
-  /* SafeRoute Brand Colors */
-  --primary: #10B981;       /* Emerald green - safety */
-  --primary-dark: #059669;
-  --primary-light: #6EE7B7;
-  --danger: #EF4444;        /* Red - danger */
-  --warning: #F59E0B;       /* Amber - moderate */
-  --safe: #10B981;          /* Green - safe */
+@import "tailwindcss";
 
-  /* Dark Glass Theme */
-  --bg-base: #0D1117;
-  --bg-surface: #161B22;
-  --bg-elevated: #1C2333;
-  --bg-glass: rgba(22, 27, 34, 0.85);
-  --bg-glass-light: rgba(255, 255, 255, 0.05);
+@custom-variant dark (&:is(.dark *));
 
-  /* Text */
-  --text-primary: #E6EDF3;
-  --text-secondary: #8B949E;
-  --text-muted: #6E7681;
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Poppins", ui-sans-serif, system-ui, sans-serif;
 
-  /* Borders */
-  --border: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(255, 255, 255, 0.16);
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
-  --shadow-md: 0 4px 20px rgba(0,0,0,0.5);
-  --shadow-lg: 0 8px 40px rgba(0,0,0,0.6);
-  --glow-primary: 0 0 20px rgba(16, 185, 129, 0.3);
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
 
-  /* Spacing */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 40px;
+  /* Safety semantic colours — unchanged for UX legibility */
+  --color-safe: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
 
-  /* Typography */
-  --font-body: 'Inter', system-ui, sans-serif;
-  --font-display: 'Space Grotesk', 'Inter', sans-serif;
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
+  /* Brand pink gradient tokens */
+  --color-primary-glow: #FFC1CC;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer base {
+  /* ── Light mode ── */
+  :root {
+    --background: 350 33% 98%;        /* near-white with the faintest pink tint */
+    --foreground: 0 0% 10%;           /* Soft Black #1A1A1A */
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    --primary: 351 100% 78%;          /* #FF91A4 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 351 60% 95%;         /* very pale pink */
+    --secondary-foreground: 0 0% 10%;
+    --muted: 220 14% 93%;
+    --muted-foreground: 220 9% 46%;
+    --accent: 351 60% 95%;
+    --accent-foreground: 0 0% 10%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 351 20% 88%;
+    --input: 351 20% 88%;
+    --ring: 351 100% 78%;
+    --sidebar: 0 0% 98%;
+    --sidebar-foreground: 0 0% 10%;
+    --sidebar-accent: 351 60% 95%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 351 20% 88%;
+    --sidebar-ring: 351 100% 78%;
+  }
+
+  /* ── Dark mode ── */
+  .dark {
+    --background: 0 0% 10%;           /* Soft Black #1A1A1A */
+    --foreground: 225 33% 97%;        /* Soft White #F7F8FC */
+    --card: 0 0% 14%;
+    --card-foreground: 225 33% 97%;
+    --popover: 0 0% 14%;
+    --popover-foreground: 225 33% 97%;
+    --primary: 351 100% 78%;          /* #FF91A4 — same pink in both modes */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 18%;
+    --secondary-foreground: 225 33% 97%;
+    --muted: 0 0% 18%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 0 0% 18%;
+    --accent-foreground: 225 33% 97%;
+    --destructive: 0 63% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 351 100% 78%;
+    --sidebar: 0 0% 10%;
+    --sidebar-foreground: 225 33% 97%;
+    --sidebar-accent: 0 0% 18%;
+    --sidebar-accent-foreground: 225 33% 97%;
+    --sidebar-border: 0 0% 18%;
+    --sidebar-ring: 351 100% 78%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
 }
 
-html, body {
-  height: 100%;
-  width: 100%;
-  background: var(--bg-base);
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
-
-#root {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-/* ===== Scrollbar ===== */
+/* ── Scrollbar ── */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--border-hover);
-  border-radius: 4px;
+  background: rgba(255, 145, 164, 0.3);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 145, 164, 0.6);
 }
 
-/* ===== Typography ===== */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  color: var(--text-primary);
-  line-height: 1.2;
+/* ── Pink gradient glow button ── */
+.btn-pink-glow {
+  background: linear-gradient(135deg, #FF91A4 0%, #FFC1CC 100%);
+  box-shadow: 0 4px 20px rgba(255, 145, 164, 0.35);
+  transition: box-shadow 200ms ease, transform 200ms ease;
+  color: white !important;
 }
-
-/* ===== Buttons ===== */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: 10px 20px;
-  font-family: var(--font-body);
-  font-size: 14px;
-  font-weight: 600;
-  border: none;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  color: white;
-  box-shadow: var(--glow-primary);
-}
-.btn-primary:hover {
+.btn-pink-glow:hover {
+  box-shadow: 0 6px 28px rgba(255, 145, 164, 0.55);
   transform: translateY(-1px);
-  box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
 }
-.btn-primary:active { transform: translateY(0); }
-
-.btn-danger {
-  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
-  color: white;
-}
-.btn-danger:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+.btn-pink-glow:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 14px rgba(255, 145, 164, 0.4);
 }
 
-.btn-glass {
-  background: var(--bg-glass-light);
-  color: var(--text-secondary);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(8px);
-}
-.btn-glass:hover {
-  background: rgba(255,255,255,0.1);
-  color: var(--text-primary);
-  border-color: var(--border-hover);
+/* ── Firefly trail animation on Leaflet highlighted route ── */
+@keyframes firefly-trail {
+  from { stroke-dashoffset: 200; }
+  to   { stroke-dashoffset: 0; }
 }
 
-.btn-sm {
-  padding: 6px 14px;
-  font-size: 13px;
-}
-.btn-lg {
-  padding: 14px 28px;
-  font-size: 16px;
+.leaflet-firefly path {
+  stroke-dasharray: 12 8;
+  animation: firefly-trail 1.8s linear infinite;
+  filter: drop-shadow(0 0 5px #FF91A4) drop-shadow(0 0 10px rgba(255, 145, 164, 0.5));
 }
 
-/* ===== Glass Cards ===== */
-.glass-card {
-  background: var(--bg-glass);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-lg);
+/* ── Pulsing glow for A/B endpoint marker pins ── */
+@keyframes pin-pulse {
+  0%, 100% { box-shadow: 0 0 8px 2px rgba(255, 145, 164, 0.4); }
+  50%       { box-shadow: 0 0 18px 6px rgba(255, 145, 164, 0.75); }
 }
 
-/* ===== Inputs ===== */
-.input {
-  width: 100%;
-  padding: 12px 16px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-.input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
-}
-.input::placeholder { color: var(--text-muted); }
-
-/* ===== Safety Color Classes ===== */
-.safety-green {
-  color: var(--safe);
-}
-.safety-yellow {
-  color: var(--warning);
-}
-.safety-red {
-  color: var(--danger);
-}
-
-.badge {
-  display: inline-flex;
+/* ── Endpoint markers ── */
+.endpoint-pin {
+  display: flex;
   align-items: center;
-  padding: 3px 10px;
-  border-radius: 99px;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
+  color: white;
 }
-.badge-green {
-  background: rgba(16, 185, 129, 0.15);
-  color: var(--safe);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+.endpoint-pin > * {
+  transform: rotate(45deg);
 }
-.badge-yellow {
-  background: rgba(245, 158, 11, 0.15);
-  color: var(--warning);
-  border: 1px solid rgba(245, 158, 11, 0.3);
+.endpoint-start .endpoint-pin {
+  background: linear-gradient(135deg, #FF91A4 0%, #FFC1CC 100%);
+  animation: pin-pulse 2s ease-in-out infinite;
 }
-.badge-red {
-  background: rgba(239, 68, 68, 0.15);
-  color: var(--danger);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+.endpoint-end .endpoint-pin {
+  background: linear-gradient(135deg, #FFC1CC 0%, #FF91A4 100%);
+  animation: pin-pulse 2s ease-in-out infinite 0.4s;
 }
 
-/* ===== Animations ===== */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
-  50% { box-shadow: 0 0 25px rgba(16, 185, 129, 0.6); }
-}
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.animate-in {
-  animation: fadeIn 0.3s ease forwards;
-}
-
-/* ===== Loading Spinner ===== */
-.spinner {
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--border);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-/* ===== Leaflet Overrides ===== */
+/* ── Leaflet overrides ── */
 .leaflet-container {
-  background: #1a2030 !important;
-  font-family: var(--font-body) !important;
+  background: hsl(var(--background)) !important;
+  font-family: "Poppins", sans-serif !important;
 }
 .leaflet-popup-content-wrapper {
-  background: var(--bg-surface) !important;
-  color: var(--text-primary) !important;
-  border: 1px solid var(--border) !important;
-  border-radius: var(--radius-md) !important;
-  box-shadow: var(--shadow-lg) !important;
+  background: hsl(var(--card)) !important;
+  color: hsl(var(--card-foreground)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 8px 40px rgba(255, 145, 164, 0.15) !important;
 }
 .leaflet-popup-tip {
-  background: var(--bg-surface) !important;
+  background: hsl(var(--card)) !important;
 }
 .leaflet-control-attribution {
-  background: rgba(13, 17, 23, 0.8) !important;
-  color: var(--text-muted) !important;
+  background: hsl(var(--background) / 0.85) !important;
+  color: hsl(var(--muted-foreground)) !important;
+  font-size: 10px !important;
+  font-family: "Poppins", sans-serif !important;
 }
-
-/* ===== Utility ===== */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+.leaflet-control-zoom a {
+  background: hsl(var(--card)) !important;
+  color: hsl(var(--foreground)) !important;
+  border-color: hsl(var(--border)) !important;
+  border-radius: 0.5rem !important;
+}
+.leaflet-control-zoom a:hover {
+  background: hsl(var(--secondary)) !important;
+  color: #FF91A4 !important;
 }

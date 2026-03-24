@@ -1,10 +1,16 @@
 import { useState, useCallback, useEffect } from 'react'
-import SafeMap from '../components/SafeMap'
-import RoutePlanner from '../components/RoutePlanner'
-import './MapPage.css'
+import { Layers, Map as MapIcon, Satellite, Loader2 } from 'lucide-react'
+import SafeMap from '@/components/SafeMap'
+import RoutePlanner from '@/components/RoutePlanner'
+import { Button } from '@/components/ui/button'
+import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Separator } from '@/components/ui/separator'
+import type { RouteResult, HeatmapPoint, SafeSpot } from '@/services/api'
 
-function parseCsvLine(line) {
-  const values = []
+function parseCsvLine(line: string): string[] {
+  const values: string[] = []
   let current = ''
   let inQuotes = false
 
@@ -31,13 +37,13 @@ function parseCsvLine(line) {
   return values.map(v => v.trim())
 }
 
-function parseCsv(text) {
+function parseCsv(text: string): Record<string, string>[] {
   const lines = text.split(/\r?\n/).filter(Boolean)
   if (lines.length < 2) return []
   const headers = parseCsvLine(lines[0])
   return lines.slice(1).map((line) => {
     const values = parseCsvLine(line)
-    const row = {}
+    const row: Record<string, string> = {}
     headers.forEach((header, idx) => {
       row[header] = values[idx] ?? ''
     })
@@ -46,17 +52,16 @@ function parseCsv(text) {
 }
 
 export default function MapPage() {
-  const [routes, setRoutes] = useState(null)
-  const [heatmapData, setHeatmapData] = useState(null)
-  const [safeSpots, setSafeSpots] = useState([])
+  const [routes, setRoutes] = useState<RouteResult[] | null>(null)
+  const [heatmapData, setHeatmapData] = useState<HeatmapPoint[] | null>(null)
+  const [safeSpots, setSafeSpots] = useState<SafeSpot[]>([])
   const [showHeatmap, setShowHeatmap] = useState(true)
   const [showSpots, setShowSpots] = useState(true)
-  const [startMarker, setStartMarker] = useState(null)
-  const [endMarker, setEndMarker] = useState(null)
+  const [startMarker, setStartMarker] = useState<{ lat: number; lng: number } | null>(null)
+  const [endMarker, setEndMarker] = useState<{ lat: number; lng: number } | null>(null)
   const [selectedRouteIndex, setSelectedRouteIndex] = useState(0)
   const [routeSearchLoading, setRouteSearchLoading] = useState(false)
   const [travelHour, setTravelHour] = useState(() => new Date().getHours())
-  const [isLayersOpen, setIsLayersOpen] = useState(false)
   const [baseMapMode, setBaseMapMode] = useState('transit')
 
   useEffect(() => {
@@ -68,8 +73,8 @@ export default function MapPage() {
         const safeSpotRows = parseCsv(safeSpotsCsv)
         const incidentRows = parseCsv(incidentsCsv)
 
-        const mappedSpots = safeSpotRows
-          .map((row) => ({
+        const mappedSpots: SafeSpot[] = safeSpotRows
+          .map((row: Record<string, string>) => ({
             lat: Number(row.latitude),
             lng: Number(row.longitude),
             type:
@@ -87,8 +92,8 @@ export default function MapPage() {
           .filter(spot => Number.isFinite(spot.lat) && Number.isFinite(spot.lng))
           .slice(0, 500)
 
-        const mappedHeatmap = incidentRows
-          .map((row) => ({
+        const mappedHeatmap: HeatmapPoint[] = incidentRows
+          .map((row: Record<string, string>) => ({
             lat: Number(row.latitude),
             lng: Number(row.longitude),
             intensity:
@@ -109,7 +114,7 @@ export default function MapPage() {
       })
   }, [])
 
-  const handleRoutesFound = useCallback((foundRoutes, markers) => {
+  const handleRoutesFound = useCallback((foundRoutes: RouteResult[], markers: { start?: { lat: number; lng: number }; end?: { lat: number; lng: number } }) => {
     setRoutes(foundRoutes)
     setSelectedRouteIndex(0)
     if (markers?.start && markers?.end) {
@@ -118,7 +123,7 @@ export default function MapPage() {
     }
   }, [])
 
-  const handleSafeSpotsFound = useCallback((spots) => {
+  const handleSafeSpotsFound = useCallback((spots: SafeSpot[]) => {
     if (Array.isArray(spots) && spots.length > 0) {
       setSafeSpots(spots)
     }
@@ -129,7 +134,7 @@ export default function MapPage() {
   }, [])
 
   return (
-    <div className="map-page">
+    <div className="flex h-[calc(100vh-5rem)]">
       <RoutePlanner
         travelHour={travelHour}
         onTravelHourChange={setTravelHour}
@@ -139,130 +144,101 @@ export default function MapPage() {
         onLoadingChange={setRouteSearchLoading}
       />
 
-      <div className="map-area">
+      <div className="relative min-h-0 flex-1">
+        <div className="absolute inset-0 z-0 min-h-0">
+          <SafeMap
+            routes={routes}
+            highlightedRouteIndex={selectedRouteIndex}
+            baseMapMode={baseMapMode}
+            heatmapData={showHeatmap ? heatmapData : null}
+            safeSpots={showSpots ? safeSpots : []}
+            onMapClick={handleMapClick}
+            startMarker={startMarker}
+            endMarker={endMarker}
+          />
+        </div>
+
         {routeSearchLoading && (
-          <div
-            className="map-loading-overlay"
-            role="status"
-            aria-live="polite"
-            aria-label="Calculating routes"
-          >
-            <div className="map-loading-card">
-              <div className="map-loading-spinner" aria-hidden />
-              <p>Calculating safest routes…</p>
+          <div className="absolute inset-0 z-20 flex items-center justify-center bg-background/60 backdrop-blur-sm">
+            <div className="flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-6 shadow-lg">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <p className="text-sm text-muted-foreground">Calculating safest routes...</p>
             </div>
           </div>
         )}
 
         {!routes?.length && !routeSearchLoading && (
-          <div className="map-empty-hint" role="region" aria-label="Getting started">
-            <h2 className="map-empty-title">Map Preview Ready</h2>
-            <p className="map-empty-text">
-              Use Layers to toggle Crime Heatmap and Safe Spots, or enter start/destination to route.
+          <div className="absolute top-4 left-1/2 z-10 -translate-x-1/2 rounded-xl border border-border bg-card/90 p-4 shadow-md backdrop-blur-sm">
+            <h2 className="text-sm font-semibold text-foreground">Map Preview Ready</h2>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Use Layers to toggle features, or enter start/destination to route.
             </p>
           </div>
         )}
 
-        <div className="map-controls">
-          <button
-            type="button"
-            className="map-layers-trigger"
-            onClick={() => setIsLayersOpen(v => !v)}
-            title={isLayersOpen ? 'Close map layers' : 'Open map layers'}
-            aria-expanded={isLayersOpen}
-            aria-controls="map-layers-panel"
-            aria-label={isLayersOpen ? 'Close map layers panel' : 'Open map layers panel'}
-          >
-            <img
-              src="/map-layer-icon.png"
-              alt=""
-              aria-hidden="true"
-              className="map-layers-trigger-icon"
-            />
-          </button>
-
-          {isLayersOpen && (
-            <div
-              id="map-layers-panel"
-              className="map-layers-panel"
-              role="dialog"
-              aria-label="Choose map"
-            >
-              <div className="map-layers-header">
-                <h3>Choose Map</h3>
-                <button
-                  type="button"
-                  className="map-layers-close"
-                  onClick={() => setIsLayersOpen(false)}
-                  aria-label="Close map chooser"
-                >
-                  ×
-                </button>
-              </div>
-
-              <div className="map-layer-section">
-                <p className="map-layer-section-label">Map Features</p>
-                <div className="map-layer-grid">
-                  <button
-                    type="button"
-                    className={`map-layer-tile ${showSpots ? 'active' : ''}`}
-                    onClick={() => setShowSpots(v => !v)}
-                    aria-pressed={showSpots}
-                  >
-                    <span className="map-layer-preview map-layer-preview-spots" aria-hidden />
-                    <span className="map-layer-label">Safe Spots</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    className={`map-layer-tile ${showHeatmap ? 'active' : ''}`}
-                    onClick={() => setShowHeatmap(v => !v)}
-                    aria-pressed={showHeatmap}
-                  >
-                    <span className="map-layer-preview map-layer-preview-heatmap" aria-hidden />
-                    <span className="map-layer-label">Crime Heatmap</span>
-                  </button>
+        <div className="absolute right-4 top-4 z-50">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-10 w-10 rounded-xl bg-card/90 shadow-md backdrop-blur-sm"
+              >
+                <Layers className="h-5 w-5" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent align="end" className="z-[60] w-64">
+              <div className="space-y-4">
+                <h3 className="text-sm font-semibold">Map Layers</h3>
+                <Separator />
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="safe-spots-switch" className="cursor-pointer text-sm">
+                      Safe Spots
+                    </Label>
+                    <Switch
+                      id="safe-spots-switch"
+                      checked={showSpots}
+                      onCheckedChange={setShowSpots}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="heatmap-switch" className="cursor-pointer text-sm">
+                      Crime Heatmap
+                    </Label>
+                    <Switch
+                      id="heatmap-switch"
+                      checked={showHeatmap}
+                      onCheckedChange={setShowHeatmap}
+                    />
+                  </div>
+                </div>
+                <Separator />
+                <div className="space-y-3">
+                  <p className="text-xs font-medium text-muted-foreground">Base Map</p>
+                  <div className="flex gap-2">
+                    <Button
+                      variant={baseMapMode === 'transit' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setBaseMapMode('transit')}
+                      className="flex-1 gap-1.5"
+                    >
+                      <MapIcon className="h-3.5 w-3.5" /> Transit
+                    </Button>
+                    <Button
+                      variant={baseMapMode === 'satellite' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setBaseMapMode('satellite')}
+                      className="flex-1 gap-1.5"
+                    >
+                      <Satellite className="h-3.5 w-3.5" /> Satellite
+                    </Button>
+                  </div>
                 </div>
               </div>
-
-              <div className="map-layer-section">
-                <p className="map-layer-section-label">Base Map</p>
-                <div className="map-layer-grid">
-                  <button
-                    type="button"
-                    className={`map-layer-tile ${baseMapMode === 'transit' ? 'active' : ''}`}
-                    onClick={() => setBaseMapMode('transit')}
-                    aria-pressed={baseMapMode === 'transit'}
-                  >
-                    <span className="map-layer-preview map-layer-preview-transit" aria-hidden />
-                    <span className="map-layer-label">Transit</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    className={`map-layer-tile ${baseMapMode === 'satellite' ? 'active' : ''}`}
-                    onClick={() => setBaseMapMode('satellite')}
-                    aria-pressed={baseMapMode === 'satellite'}
-                  >
-                    <span className="map-layer-preview map-layer-preview-satellite" aria-hidden />
-                    <span className="map-layer-label">Satellite</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+            </PopoverContent>
+          </Popover>
         </div>
-
-        <SafeMap
-          routes={routes}
-          highlightedRouteIndex={selectedRouteIndex}
-          baseMapMode={baseMapMode}
-          heatmapData={showHeatmap ? heatmapData : null}
-          safeSpots={showSpots ? safeSpots : []}
-          onMapClick={handleMapClick}
-          startMarker={startMarker}
-          endMarker={endMarker}
-        />
       </div>
     </div>
   )
