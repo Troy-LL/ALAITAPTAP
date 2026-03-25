@@ -2,7 +2,7 @@
 
 Walking navigation for **Metro Manila** that prefers **safer streets**, not just the fastest path. The app combines **crime incident data**, **lighting and time-of-day context**, **safe spots** (e.g. lit areas, police, commercial corridors), and an **ML-based safety scorer** so users can plan routes with clearer situational awareness—especially women walking alone.
 
-Built for the **AIRA Youth Challenge 2026** (MVP).
+Built for the **AI ASEAN Youth Challenge 2026**.
 
 ## What we’re building
 
@@ -57,7 +57,6 @@ Tune `CORS_ORIGINS` in the backend env to include `https://saferoute-asean.verce
 
 | Item | How to verify |
 |------|----------------|
-| FastAPI on Railway | Open `/health` on your Railway URL. |
 | React on Vercel | Load [saferoute-asean.vercel.app](https://saferoute-asean.vercel.app); map loads. |
 | PostgreSQL + schema | Railway Postgres attached; tables created on app boot (`Base.metadata.create_all`). |
 | 500+ crime incidents | `data/crime_incidents.csv` has 520 rows; `seed_database.py` loads them. |
