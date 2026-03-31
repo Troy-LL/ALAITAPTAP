@@ -6,7 +6,7 @@ from geopy.distance import geodesic
 load_dotenv()
 
 ORS_API_KEY = os.getenv("OPENROUTESERVICE_API_KEY")
-ORS_BASE_URL = "https://api.openrouteservice.org/v2/directions/foot-walking"
+ORS_BASE_URL = "https://api.openrouteservice.org/v2/directions/foot-walking/json"
 
 # ORS foot-walking rejects routes whose approximated distance exceeds ~150 km.
 # We no longer hard-fail on a local straight-line check, since bad geocoding
