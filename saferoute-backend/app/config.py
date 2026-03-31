@@ -20,10 +20,13 @@ SUPABASE_SERVICE_ROLE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")
 
 # App Settings
 APP_ENV = os.getenv("APP_ENV", "development")
-CORS_ORIGINS = os.getenv(
+_cors_raw = os.getenv(
     "CORS_ORIGINS",
     "http://localhost:5173,https://saferoute-asean.vercel.app"
-).split(",")
+)
+# Strip whitespace from each origin to avoid silent mismatches (e.g. "https://foo, https://bar")
+# Use ["*"] to allow all origins (not recommended for production)
+CORS_ORIGINS = [o.strip() for o in _cors_raw.split(",") if o.strip()]
 
 # Safety scorer: set SAFETY_IGNORE_CRIME=1 to score routes from public infrastructure (safe spots CSV)
 # only, ignoring crime_incidents. Set SAFETY_USE_OSM_FILE=1 only if export.geojson is NOT merged into

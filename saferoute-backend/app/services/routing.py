@@ -15,44 +15,62 @@ ORS_BASE_URL = "https://api.openrouteservice.org/v2/directions/foot-walking"
 route_cache = TTLCache(maxsize=500, ttl=3600)
 MAX_STRAIGHT_FOR_MULTI_ROUTE_M = 50_000
 
-@cached(cache=route_cache, key=lambda start, end, alternatives=2: (tuple(start), tuple(end), alternatives))
+def _cache_key(start, end, alternatives=2):
+    return (tuple(start), tuple(end), alternatives)
+
+@cached(cache=route_cache, key=_cache_key)
 def get_walking_routes(start_coords, end_coords, alternatives=2):
     """
-    Get walking routes from OpenRouteService from Cache or API
+    Get walking routes from OpenRouteService from Cache or API.
+    ORS v2 GET /directions returns a GeoJSON FeatureCollection:
+      { type: "FeatureCollection", features: [ { geometry: <encoded polyline>, properties: { summary: {distance, duration}, segments: [...] } } ] }
     """
     if not ORS_API_KEY:
         raise Exception("OPENROUTESERVICE_API_KEY not set in environment")
 
-    # Use GET — proven to work via direct URL test.
-    # Format: start=lng,lat&end=lng,lat
-    start_str = f"{start_coords[0]},{start_coords[1]}"
-    end_str = f"{end_coords[0]},{end_coords[1]}"
-    
+    # GET format: start=lng,lat&end=lng,lat
     params = {
         'api_key': ORS_API_KEY,
-        'start': start_str,
-        'end': end_str
+        'start': f"{start_coords[0]},{start_coords[1]}",
+        'end': f"{end_coords[0]},{end_coords[1]}",
     }
-    
-    # Optional: fetch a single alternative if requested (GET supports basic alternatives)
-    # response = requests.get(ORS_BASE_URL, params=params)
-    # Actually, many profiles don't support alternatives on GET. We'll start with the safest path.
-    
+
     response = requests.get(ORS_BASE_URL, params=params)
 
     if response.status_code != 200:
         raise _ors_routing_error(response)
-    
+
     data = response.json()
     routes = []
-    
-    for route in data.get('routes', []):
+
+    # ORS v2 GET returns a GeoJSON FeatureCollection — NOT {routes:[]}
+    features = data.get('features', [])
+    for feature in features:
+        props = feature.get('properties', {})
+        summary = props.get('summary', {})
+        geometry = feature.get('geometry')  # This is the encoded polyline string
+
+        if not geometry or not summary:
+            continue
+
+        # geometry may be a dict {"type":"LineString","coordinates":[...]} or an encoded string
+        # ORS v2 GET with format=json returns encoded polyline as a string by default
+        if isinstance(geometry, dict):
+            # GeoJSON LineString — convert coordinates directly
+            coords = geometry.get('coordinates', [])
+            # Re-encode to polyline for consistent handling downstream
+            import polyline as polyline_lib
+            encoded = polyline_lib.encode([(lat, lng) for lng, lat in coords])
+            geometry_str = encoded
+        else:
+            geometry_str = geometry
+
         routes.append({
-            'geometry': route['geometry'],  # Encoded polyline
-            'distance': route['summary']['distance'],  # meters
-            'duration': route['summary']['duration'],  # seconds
+            'geometry': geometry_str,  # Encoded polyline string
+            'distance': summary.get('distance', 0),  # meters
+            'duration': summary.get('duration', 0),  # seconds
         })
-    
+
     return routes
 
 

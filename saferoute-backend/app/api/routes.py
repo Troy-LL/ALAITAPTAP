@@ -944,7 +944,7 @@ def calculate_route(request: Request, body: RouteRequest, db: Session = Depends(
             # Calculate safety score
             safety_score = scorer.calculate_route_safety(
                 coords_lnglat,
-                time_of_day=request.time_of_day
+                time_of_day=body.time_of_day
             )
             passed = scorer.get_passed_safe_spots(coords_lnglat, radius_meters=150)
 
