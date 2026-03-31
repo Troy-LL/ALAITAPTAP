@@ -56,6 +56,7 @@ interface SafeMapProps {
   userLocation?: { lat: number; lng: number; heading: number; speed: number } | null
   onSpotClick?: (spot: SafeSpot) => void
   onClearRoute?: () => void
+  onClearPin?: (type: 'start' | 'end') => void
   onRouteClick?: (index: number) => void
 }
 
@@ -72,6 +73,7 @@ export default function SafeMap({
   userLocation,
   onSpotClick,
   onClearRoute,
+  onClearPin,
   onRouteClick,
 }: SafeMapProps) {
   const { resolvedTheme } = useTheme()
@@ -464,7 +466,7 @@ export default function SafeMap({
         
       m.on('popupopen', (e) => {
         const btn = e.popup.getElement()?.querySelector('.delete-pin-btn')
-        if (btn) L.DomEvent.on(btn as HTMLElement, 'click', () => onClearRoute?.())
+        if (btn) L.DomEvent.on(btn as HTMLElement, 'click', () => onClearPin?.('start'))
       })
       endpointMarkers.current.push(m)
     }
@@ -475,7 +477,7 @@ export default function SafeMap({
 
       m.on('popupopen', (e) => {
         const btn = e.popup.getElement()?.querySelector('.delete-pin-btn')
-        if (btn) L.DomEvent.on(btn as HTMLElement, 'click', () => onClearRoute?.())
+        if (btn) L.DomEvent.on(btn as HTMLElement, 'click', () => onClearPin?.('end'))
       })
       endpointMarkers.current.push(m)
     }

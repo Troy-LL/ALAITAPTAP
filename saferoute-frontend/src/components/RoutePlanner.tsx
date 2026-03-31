@@ -48,6 +48,7 @@ interface RoutePlannerProps {
   externalRoutes?: RouteResult[] | null
   externalSelectedIndex?: number
   onClear?: () => void
+  onClearPin?: (type: 'start' | 'end') => void
 }
 
 const SCORE_COLORS: Record<string, string> = {
@@ -72,6 +73,7 @@ export default function RoutePlanner({
   startMarker,
   endMarker,
   onClear,
+  onClearPin,
 }: RoutePlannerProps) {
   const [startInput, setStartInput] = useState('')
   const [endInput, setEndInput] = useState('')
@@ -107,15 +109,17 @@ export default function RoutePlanner({
     getRailwaySchedules().then(setSchedules)
   }, [])
 
-  // Sync external map markers into input labels
   useEffect(() => {
     if (startMarker) {
       setStartInput(`${startMarker.lat.toFixed(5)}, ${startMarker.lng.toFixed(5)}`)
       setStartResolved({ label: 'Map Pin', lat: startMarker.lat, lng: startMarker.lng })
       setStartSuggestOpen(false)
-    } else if (!activeRoutes) {
-      // Only clear if we don't have an active route (to avoid clearing on fresh route load)
-      // setStartInput('')
+    } else {
+      // Clear input when startMarker is removed on the backend.
+      if (!activeRoutes) {
+        setStartInput('')
+        setStartResolved(null)
+      }
     }
   }, [startMarker, activeRoutes])
 
@@ -124,8 +128,13 @@ export default function RoutePlanner({
       setEndInput(`${endMarker.lat.toFixed(5)}, ${endMarker.lng.toFixed(5)}`)
       setEndResolved({ label: 'Map Pin', lat: endMarker.lat, lng: endMarker.lng })
       setEndSuggestOpen(false)
+    } else {
+      if (!activeRoutes) {
+        setEndInput('')
+        setEndResolved(null)
+      }
     }
-  }, [endMarker])
+  }, [endMarker, activeRoutes])
 
   const fetchSuggestions = useCallback(async (raw: string) => {
     const q = raw.trim()
@@ -314,7 +323,7 @@ export default function RoutePlanner({
                   onClick={() => {
                     setStartInput('')
                     setStartResolved(null)
-                    onClear?.()
+                    onClearPin?.('start')
                   }}
                   className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
                   aria-label="Clear starting point"
@@ -390,7 +399,7 @@ export default function RoutePlanner({
                   onClick={() => {
                     setEndInput('')
                     setEndResolved(null)
-                    onClear?.()
+                    onClearPin?.('end')
                   }}
                   className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
                   aria-label="Clear destination"

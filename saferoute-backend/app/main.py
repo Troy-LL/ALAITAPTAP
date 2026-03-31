@@ -28,6 +28,23 @@ app.add_middleware(
 # Create tables on startup
 Base.metadata.create_all(bind=engine)
 
+# Auto-seed database if empty (useful for fresh Railway deployments)
+from app.database import SessionLocal
+from app.models import SafeSpot
+from scripts.seed_database import seed_crime_data, seed_safe_spots
+
+db = SessionLocal()
+try:
+    if db.query(SafeSpot).count() == 0:
+        print("Database is empty. Auto-seeding crime and safe spot data...")
+        seed_crime_data()
+        seed_safe_spots()
+        print("Database auto-seeding complete.")
+except Exception as e:
+    print(f"Failed to auto-seed database: {e}")
+finally:
+    db.close()
+
 # Include routers (imported here to avoid circular imports)
 from app.api import routes, safety, spots
 app.include_router(routes.router, prefix="/api", tags=["routing"])

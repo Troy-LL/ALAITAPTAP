@@ -314,6 +314,18 @@ export default function MapPage() {
     toast.success('Route and pins cleared')
   }, [])
 
+  const handleClearPin = useCallback((type: 'start' | 'end') => {
+    if (type === 'start') {
+      setStartMarker(null)
+      toast.success('Start pin removed. Please set a new start point.')
+    } else {
+      setEndMarker(null)
+      toast.success('Destination pin removed. Please set a new destination.')
+    }
+    setRoutes(null)
+    setSelectedRouteIndex(0)
+  }, [])
+
   const handleRouteClick = useCallback((index: number) => {
     setSelectedRouteIndex(index)
     // Only open the relevant panel for the current breakpoint.
@@ -345,6 +357,7 @@ export default function MapPage() {
           startMarker={startMarker}
           endMarker={endMarker}
           onClear={handleClearRoute}
+          onClearPin={handleClearPin}
         />
       </div>
 
@@ -366,6 +379,7 @@ export default function MapPage() {
             startMarker={startMarker}
             endMarker={endMarker}
             onClear={handleClearRoute}
+            onClearPin={handleClearPin}
           />
         </SheetContent>
       </Sheet>
@@ -384,6 +398,7 @@ export default function MapPage() {
             onRouteClick={handleRouteClick}
             onSpotClick={handleSpotClick}
             onClearRoute={handleClearRoute}
+            onClearPin={handleClearPin}
             baseMapMode={baseMapMode}
           />
         </div>
