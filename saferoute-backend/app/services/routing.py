@@ -9,9 +9,9 @@ ORS_API_KEY = os.getenv("OPENROUTESERVICE_API_KEY")
 ORS_BASE_URL = "https://api.openrouteservice.org/v2/directions/foot-walking"
 
 # ORS foot-walking rejects routes whose approximated distance exceeds ~150 km.
-# Walking paths are longer than straight-line; use a conservative straight-line cap.
-MAX_STRAIGHT_LINE_METERS = 130_000  # stay under ORS route limit
-# Beyond this, request only one route (alternatives can push ORS over the limit).
+# We no longer hard-fail on a local straight-line check, since bad geocoding
+# can incorrectly trigger "too far apart" for nearby points. Instead, we let
+# ORS enforce its own limits and surface its 400 error via _ors_routing_error.
 MAX_STRAIGHT_FOR_MULTI_ROUTE_M = 50_000
 
 
@@ -33,12 +33,6 @@ def get_walking_routes(start_coords, end_coords, alternatives=2):
     lng1, lat1 = start_coords
     lng2, lat2 = end_coords
     straight_m = geodesic((lat1, lng1), (lat2, lng2)).meters
-
-    if straight_m > MAX_STRAIGHT_LINE_METERS:
-        raise ValueError(
-            "Start and end are too far apart for walking directions (max about "
-            "130 km straight-line). Choose closer points in Metro Manila."
-        )
 
     # Long trips: single route only — avoids ORS 400 "approximated route distance > 150000 m"
     target_count = 1 if straight_m > MAX_STRAIGHT_FOR_MULTI_ROUTE_M else min(

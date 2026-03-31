@@ -35,9 +35,9 @@ const TILE_LAYER_CONFIG = {
     options: { attribution: CARTO_ATTRIBUTION, subdomains: 'abcd', maxZoom: 20 },
   },
   satellite: {
-    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    url: 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
     options: {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; Esri',
+      attribution: '&copy; Google Maps',
       maxZoom: 20,
     },
   },
@@ -49,11 +49,14 @@ interface SafeMapProps {
   heatmapData: HeatmapPoint[] | null
   safeSpots: SafeSpot[]
   onMapClick?: (latlng: L.LatLng) => void
+  onMapLongPress?: (latlng: L.LatLng) => void
   startMarker: { lat: number; lng: number } | null
   endMarker: { lat: number; lng: number } | null
   highlightedRouteIndex?: number
   userLocation?: { lat: number; lng: number; heading: number; speed: number } | null
   onSpotClick?: (spot: SafeSpot) => void
+  onClearRoute?: () => void
+  onRouteClick?: (index: number) => void
 }
 
 export default function SafeMap({
@@ -62,11 +65,14 @@ export default function SafeMap({
   heatmapData,
   safeSpots,
   onMapClick,
+  onMapLongPress,
   startMarker,
   endMarker,
   highlightedRouteIndex = 0,
   userLocation,
   onSpotClick,
+  onClearRoute,
+  onRouteClick,
 }: SafeMapProps) {
   const { resolvedTheme } = useTheme()
   const [mapZoom, setMapZoom] = useState(13)
@@ -78,6 +84,9 @@ export default function SafeMap({
   const endpointMarkers = useRef<L.Marker[]>([])
   const baseLayerRef = useRef<L.TileLayer | null>(null)
   const userMarkerRef = useRef<L.Marker | null>(null)
+  const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const longPressFiredRef = useRef(false)
+  const isDraggingRef = useRef(false)
 
   // Initialize map
   useEffect(() => {
@@ -126,15 +135,74 @@ export default function SafeMap({
     baseLayerRef.current = L.tileLayer(nextLayerConfig.url, nextLayerConfig.options).addTo(map)
   }, [baseMapMode, resolvedTheme])
 
-  // Update click handler when callback changes
+  // Update click / long-press handlers when callbacks change
   useEffect(() => {
     const map = mapInstance.current
     if (!map) return
-    map.off('click')
-    map.on('click', (e) => {
+
+    const clickHandler = (e: L.LeafletMouseEvent) => {
+      if (longPressFiredRef.current) {
+        longPressFiredRef.current = false
+        return
+      }
       if (onMapClick) onMapClick(e.latlng)
-    })
-  }, [onMapClick])
+    }
+
+    const clearTimer = () => {
+      if (longPressTimerRef.current) {
+        clearTimeout(longPressTimerRef.current)
+        longPressTimerRef.current = null
+      }
+    }
+
+    const downHandler = (e: L.LeafletMouseEvent) => {
+      if (!onMapLongPress) return
+      clearTimer()
+      longPressFiredRef.current = false
+      isDraggingRef.current = false
+      longPressTimerRef.current = setTimeout(() => {
+        if (!isDraggingRef.current) {
+          longPressFiredRef.current = true
+          onMapLongPress(e.latlng)
+        }
+      }, 550)
+    }
+
+    const moveStartHandler = () => {
+      isDraggingRef.current = true
+      clearTimer()
+    }
+
+    const moveEndHandler = () => {
+      isDraggingRef.current = false
+    }
+
+    const contextMenuHandler = (e: L.LeafletMouseEvent) => {
+      if (onMapLongPress) {
+        longPressFiredRef.current = true
+        onMapLongPress(e.latlng)
+      }
+    }
+
+    map.on('click', clickHandler)
+    map.on('mousedown', downHandler)
+    map.on('mouseup', clearTimer)
+    map.on('mouseout', clearTimer)
+    map.on('movestart', moveStartHandler)
+    map.on('moveend', moveEndHandler)
+    map.on('contextmenu', contextMenuHandler)
+
+    return () => {
+      map.off('click', clickHandler)
+      map.off('mousedown', downHandler)
+      map.off('mouseup', clearTimer)
+      map.off('mouseout', clearTimer)
+      map.off('movestart', moveStartHandler)
+      map.off('moveend', moveEndHandler)
+      map.off('contextmenu', contextMenuHandler)
+      clearTimer()
+    }
+  }, [onMapClick, onMapLongPress])
 
   // Draw routes
   useEffect(() => {
@@ -196,6 +264,14 @@ export default function SafeMap({
         </div>
       `, { sticky: true })
 
+      // Clicking a route selects it in the side panel
+      line.on('click', () => {
+        onRouteClick?.(idx)
+      })
+      glowLine.on('click', () => {
+        onRouteClick?.(idx)
+      })
+
       routeLayers.current.push(glowLine, line)
     })
 
@@ -256,7 +332,7 @@ export default function SafeMap({
     }
   }, [heatmapData])
 
-  // Draw safe spots — two-layer pin design with lazy tooltips
+  // Draw safe spots — single minimal marker per spot with lazy tooltip
   useEffect(() => {
     const map = mapInstance.current
     if (!map) return
@@ -269,35 +345,25 @@ export default function SafeMap({
 
     const SPOT_COLORS: Record<string, { label: string; color: string; category: string }> = {
       police_station:    { label: 'Police Station',    color: '#3498DB', category: 'Emergency' },
-      convenience_store: { label: 'Convenience Store',  color: '#2ECC71', category: 'Safe Zone' },
+      convenience_store: { label: 'Convenience Store', color: '#2ECC71', category: 'Safe Zone' },
       security_post:     { label: 'Security Post',     color: '#2ECC71', category: 'Safe Zone' },
-      hospital:          { label: 'Hospital',           color: '#3498DB', category: 'Emergency' },
+      hospital:          { label: 'Hospital',          color: '#3498DB', category: 'Emergency' },
       fire_station:      { label: 'Fire Station',      color: '#3498DB', category: 'Emergency' },
       street_lamp:       { label: 'Street Lamp',       color: '#F39C12', category: 'Caution' },
       surveillance:      { label: 'Surveillance',      color: '#9B59B6', category: 'Community' },
     }
 
-    const OUTER_R = 20
-    const INNER_R = 7
+    const INNER_R = 3
 
     safeSpots.forEach(spot => {
       const meta = SPOT_COLORS[spot.type] || { label: 'Safe Spot', color: '#2ECC71', category: 'Safe Zone' }
 
-      const outerRing = L.circleMarker([spot.lat, spot.lng], {
-        radius: OUTER_R,
-        color: meta.color,
-        weight: 2,
-        fillColor: meta.color,
-        fillOpacity: 0.12,
-        className: 'spot-outer-ring',
-      }).addTo(map)
-
       const innerDot = L.circleMarker([spot.lat, spot.lng], {
         radius: INNER_R,
-        color: '#fff',
-        weight: 2,
+        color: meta.color,
+        weight: 1,
         fillColor: meta.color,
-        fillOpacity: 1,
+        fillOpacity: 0.9,
       }).addTo(map)
 
       // Lazy tooltip on hover — created on mouseover, removed on mouseout
@@ -310,23 +376,20 @@ export default function SafeMap({
           </div>`
         innerDot.bindTooltip(tooltipContent, {
           direction: 'top',
-          offset: [0, -12],
+          offset: [0, -10],
           className: 'spot-tooltip-container',
         }).openTooltip()
-
-        outerRing.setRadius(28)
       })
 
       innerDot.on('mouseout', () => {
         innerDot.unbindTooltip()
-        outerRing.setRadius(OUTER_R)
       })
 
       innerDot.on('click', () => {
         onSpotClick?.(spot)
       })
 
-      spotsLayer.current.push(outerRing, innerDot)
+      spotsLayer.current.push(innerDot)
     })
   }, [safeSpots, mapZoom, onSpotClick])
 
@@ -351,19 +414,59 @@ export default function SafeMap({
       iconAnchor: [14, 36],
     })
 
+    const findNearest = (lat: number, lng: number) => {
+      if (!safeSpots || safeSpots.length === 0) return null
+      const target = L.latLng(lat, lng)
+      let nearest = safeSpots[0]
+      let minDist = target.distanceTo(L.latLng(nearest.lat, nearest.lng))
+      
+      for (const spot of safeSpots) {
+        const dist = target.distanceTo(L.latLng(spot.lat, spot.lng))
+        if (dist < minDist) {
+          minDist = dist
+          nearest = spot
+        }
+      }
+      return { spot: nearest, distance: minDist }
+    }
+
+    const buildPopup = (label: string, lat: number, lng: number) => {
+      const nearest = findNearest(lat, lng)
+      if (!nearest) return `<strong>${label}</strong>`
+      
+      const { spot, distance } = nearest
+      const distStr = distance > 1000 ? `${(distance/1000).toFixed(1)} km` : `${Math.round(distance)} m`
+      
+      const isDark = resolvedTheme === 'dark' // Use existing resolvedTheme from the component scope
+      const bg = isDark ? '#1e293b' : '#f1f5f9'
+      const text = isDark ? '#f8fafc' : '#334155'
+      const sub = isDark ? '#94a3b8' : '#64748b'
+      
+      return `
+        <div style="font-family: inherit; font-size: 13px; min-width: 150px;">
+          <strong style="font-size: 14px; margin-bottom: 4px; display: block; color: ${text}">${label}</strong>
+          <div style="color: ${sub}; font-size: 11px; margin-bottom: 6px;">Nearest Safe Spot (${distStr} away)</div>
+          <div style="background: ${bg}; padding: 8px; border-radius: 8px; color: ${text}; border-left: 3px solid #2ECC71;">
+            <strong style="display: block;">${spot.name}</strong>
+            ${spot.address ? `<div style="font-size: 10px; opacity: 0.8; margin-top: 3px;">${spot.address}</div>` : ''}
+          </div>
+        </div>
+      `
+    }
+
     if (startMarker) {
       const m = L.marker([startMarker.lat, startMarker.lng], { icon: startIcon })
         .addTo(map)
-        .bindPopup('Start')
+        .bindPopup(buildPopup('Start', startMarker.lat, startMarker.lng))
       endpointMarkers.current.push(m)
     }
     if (endMarker) {
       const m = L.marker([endMarker.lat, endMarker.lng], { icon: endIcon })
         .addTo(map)
-        .bindPopup('Destination')
+        .bindPopup(buildPopup('Destination', endMarker.lat, endMarker.lng))
       endpointMarkers.current.push(m)
     }
-  }, [startMarker, endMarker])
+  }, [startMarker, endMarker, safeSpots, resolvedTheme])
 
   // User location marker (Ali the firefly pointer)
   useEffect(() => {
@@ -441,9 +544,29 @@ export default function SafeMap({
 
       {/* Legends — bottom-left */}
       <div className="absolute bottom-4 left-4 z-[1000] flex flex-col gap-2">
+
+        {/* Clear Route — only shown when route is active */}
+        {onClearRoute && routes && routes.length > 0 && (
+          <button
+            type="button"
+            onClick={onClearRoute}
+            className="flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold shadow-lg backdrop-blur-sm transition-all cursor-pointer"
+            style={{
+              background: 'rgba(255,80,100,0.18)',
+              border: '1.5px solid rgba(255,80,100,0.5)',
+              color: '#ff5060',
+            }}
+            aria-label="Clear current route"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            Clear Route
+          </button>
+        )}
         {/* Route safety legend */}
         <div className="map-glass-card rounded-xl p-2.5">
-          <div className="mb-1.5 text-[10px] font-semibold text-foreground">Route Safety</div>
+        <div className="mb-1 flex items-center text-[10px] font-semibold text-foreground">
+            <span>Route Safety</span>
+          </div>
           <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
             <span className="flex items-center gap-1">
               <span className="inline-block h-2 w-2 rounded-full" style={{ background: '#FF91A4', boxShadow: '0 0 4px rgba(255,145,164,0.6)' }} />

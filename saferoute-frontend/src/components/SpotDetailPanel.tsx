@@ -37,8 +37,34 @@ export default function SpotDetailPanel({ spot, onClose, onRouteHere }: SpotDeta
   }
 
   if (!spot) return null
-
+  
   const meta = CATEGORY_META[spot.type] || { label: 'Safe Spot', color: '#2ECC71' }
+
+  // --- Real-time Status Logic ---
+  const checkIsOpen = (hours: string | null | undefined): { open: boolean; label: string } => {
+    if (!hours || hours === 'nan') return { open: true, label: 'Verified Spot' }
+    const h = hours.toLowerCase().trim()
+    if (h === '24/7' || h.includes('24 hours')) return { open: true, label: 'Open 24/7' }
+    
+    try {
+      const now = new Date()
+      const currentMinutes = now.getHours() * 60 + now.getMinutes()
+      const match = h.match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/)
+      if (match) {
+        const startH = parseInt(match[1]), startM = parseInt(match[2])
+        const endH = parseInt(match[3]), endM = parseInt(match[4])
+        let startTotal = startH * 60 + startM
+        let endTotal = endH * 60 + endM
+        const isOpen = endTotal <= startTotal 
+          ? (currentMinutes >= startTotal || currentMinutes < endTotal)
+          : (currentMinutes >= startTotal && currentMinutes < endTotal)
+        return { open: isOpen, label: isOpen ? 'Open now' : 'Closed' }
+      }
+    } catch (e) {}
+    return { open: true, label: 'Opening Hours' }
+  }
+
+  const { open: isOpen, label: statusLabel } = checkIsOpen(spot.hours)
 
   return (
     <>
@@ -71,6 +97,14 @@ export default function SpotDetailPanel({ spot, onClose, onRouteHere }: SpotDeta
               style={{ background: meta.color }}
             >
               {meta.label}
+            </span>
+            <span
+              className={cn(
+                "mt-1.5 ml-2 inline-block rounded-full px-2.5 py-0.5 text-[11px] font-semibold text-white",
+                isOpen ? "bg-green-500" : "bg-red-500"
+              )}
+            >
+              {statusLabel}
             </span>
           </div>
 
@@ -146,6 +180,14 @@ export default function SpotDetailPanel({ spot, onClose, onRouteHere }: SpotDeta
               style={{ background: meta.color }}
             >
               {meta.label}
+            </span>
+            <span
+              className={cn(
+                "mt-1 ml-2 inline-block rounded-full px-2.5 py-0.5 text-[11px] font-semibold text-white",
+                isOpen ? "bg-green-500" : "bg-red-500"
+              )}
+            >
+              {statusLabel}
             </span>
           </div>
 

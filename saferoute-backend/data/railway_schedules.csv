@@ -1,0 +1,14 @@
+Line,Origin_Station,Destination_Station,Schedule_Type,First_Train,Last_Train,Notes
+LRT-1,Dr. Santos,FPJ Station,Weekday,04:30,22:30,Regular Ops
+LRT-1,FPJ Station,Dr. Santos,Weekday,04:30,22:45,Regular Ops
+LRT-1,Dr. Santos,FPJ Station,Weekend/Holiday,05:00,21:30,Regular Ops
+LRT-1,FPJ Station,Dr. Santos,Weekend/Holiday,05:00,21:45,Regular Ops
+LRT-2,Antipolo,Recto,Daily,05:00,21:00,Regular Ops
+LRT-2,Recto,Antipolo,Daily,05:00,21:30,Regular Ops
+MRT-3,North Avenue,Taft Avenue,Weekday,04:30,22:30,Regular Ops
+MRT-3,Taft Avenue,North Avenue,Weekday,05:05,23:09,Regular Ops
+MRT-3,North Avenue,Taft Avenue,Weekend/Holiday,04:30,21:30,Regular Ops
+MRT-3,Taft Avenue,North Avenue,Weekend/Holiday,05:30,22:09,Regular Ops
+LRT-1,ALL,ALL,"April 2-5, 2026",CLOSED,CLOSED,Holy Week Maintenance
+LRT-2,ALL,ALL,"April 2-5, 2026",CLOSED,CLOSED,Holy Week Maintenance
+MRT-3,ALL,ALL,"April 2-5, 2026",CLOSED,CLOSED,Holy Week Maintenance

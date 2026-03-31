@@ -1,5 +1,6 @@
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { Menu, X } from 'lucide-react'
+import { toast } from 'sonner'
 import SafeMap from '@/components/SafeMap'
 import RoutePlanner from '@/components/RoutePlanner'
 import MapOverlayPanel from '@/components/MapOverlayPanel'
@@ -9,6 +10,17 @@ import { AliIcon } from '@/components/mascot/Ali'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import type { RouteResult, HeatmapPoint, SafeSpot } from '@/services/api'
+import { calculateRoute, getSafeSpots } from '@/services/api'
+
+function getDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
+  const R = 6371e3
+  const p1 = lat1 * Math.PI/180
+  const p2 = lat2 * Math.PI/180
+  const dp = (lat2-lat1) * Math.PI/180
+  const dl = (lon2-lon1) * Math.PI/180
+  const a = Math.sin(dp/2) * Math.sin(dp/2) + Math.cos(p1) * Math.cos(p2) * Math.sin(dl/2) * Math.sin(dl/2)
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+}
 
 function parseCsvLine(line: string): string[] {
   const values: string[] = []
@@ -56,14 +68,55 @@ export default function MapPage() {
   const [routes, setRoutes] = useState<RouteResult[] | null>(null)
   const [heatmapData, setHeatmapData] = useState<HeatmapPoint[] | null>(null)
   const [safeSpots, setSafeSpots] = useState<SafeSpot[]>([])
-  const [showHeatmap, setShowHeatmap] = useState(true)
+  const [baseSafeSpots, setBaseSafeSpots] = useState<SafeSpot[]>([])
+  const [showHeatmap, setShowHeatmap] = useState(false)
   const [showSpots, setShowSpots] = useState(true)
+  const [showRealTime, setShowRealTime] = useState(false)
+  const [baseMapMode, setBaseMapMode] = useState('transit')
+
+  // --- Real-time Filter Logic ---
+  const isSpotOpen = (hours: string | null | undefined): boolean => {
+    if (!hours || hours === 'nan') return true // Assume open if unknown for now
+    const h = hours.toLowerCase().trim()
+    if (h === '24/7' || h.includes('24 hours')) return true
+    
+    try {
+      const now = new Date()
+      const currentMinutes = now.getHours() * 60 + now.getMinutes()
+      
+      // Handle simple HH:mm-HH:mm format
+      const match = h.match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/)
+      if (match) {
+        const startH = parseInt(match[1])
+        const startM = parseInt(match[2])
+        const endH = parseInt(match[3])
+        const endM = parseInt(match[4])
+        
+        let startTotal = startH * 60 + startM
+        let endTotal = endH * 60 + endM
+        
+        // Handle midnight crossing (e.g., 08:00 - 02:00)
+        if (endTotal <= startTotal) {
+          return currentMinutes >= startTotal || currentMinutes < endTotal
+        }
+        return currentMinutes >= startTotal && currentMinutes < endTotal
+      }
+    } catch (e) {
+      console.warn("Failed to parse hours:", hours, e)
+    }
+    return true // Fallback to showing it
+  }
+
+  const filteredSafeSpots = useMemo(() => {
+    if (!showRealTime) return safeSpots
+    return safeSpots.filter(s => isSpotOpen(s.hours))
+  }, [safeSpots, showRealTime])
+
   const [startMarker, setStartMarker] = useState<{ lat: number; lng: number } | null>(null)
   const [endMarker, setEndMarker] = useState<{ lat: number; lng: number } | null>(null)
   const [selectedRouteIndex, setSelectedRouteIndex] = useState(0)
   const [routeSearchLoading, setRouteSearchLoading] = useState(false)
   const [travelHour, setTravelHour] = useState(() => new Date().getHours())
-  const [baseMapMode, setBaseMapMode] = useState('transit')
   const [isDesktopPanelOpen, setIsDesktopPanelOpen] = useState(false)
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false)
   const [selectedSpot, setSelectedSpot] = useState<SafeSpot | null>(null)
@@ -88,6 +141,37 @@ export default function MapPage() {
       if (watchIdRef.current != null) navigator.geolocation.clearWatch(watchIdRef.current)
     }
   }, [])
+
+  useEffect(() => {
+    if (!routes || routes.length === 0) {
+      if (baseSafeSpots.length > 0) {
+        setSafeSpots(baseSafeSpots)
+      }
+      return
+    }
+
+    const currentRoute = routes[selectedRouteIndex]
+    if (!currentRoute?.geometry) return
+    
+    // Unpack geometry [lng, lat] to {lat, lng}
+    const routePoints = currentRoute.geometry.map(([lng, lat]) => ({ lat, lng }))
+    
+    // We only want spots within ~250 meters of the active route
+    const nearSpots = baseSafeSpots.filter(spot => {
+      // Downsample check for performance
+      for (let i = 0; i < routePoints.length; i += 4) {
+        if (getDistance(spot.lat, spot.lng, routePoints[i].lat, routePoints[i].lng) <= 250) {
+          return true
+        }
+      }
+      // Check exact boundaries
+      if (routePoints.length > 0 && getDistance(spot.lat, spot.lng, routePoints[0].lat, routePoints[0].lng) <= 250) return true
+      if (routePoints.length > 0 && getDistance(spot.lat, spot.lng, routePoints[routePoints.length - 1].lat, routePoints[routePoints.length - 1].lng) <= 250) return true
+      return false
+    })
+
+    setSafeSpots(nearSpots)
+  }, [routes, selectedRouteIndex, baseSafeSpots])
 
   useEffect(() => {
     Promise.all([
@@ -130,10 +214,12 @@ export default function MapPage() {
           .filter(point => Number.isFinite(point.lat) && Number.isFinite(point.lng))
           .slice(0, 600)
 
+        setBaseSafeSpots(mappedSpots)
         setSafeSpots(mappedSpots)
         setHeatmapData(mappedHeatmap)
       })
       .catch(() => {
+        setBaseSafeSpots([])
         setSafeSpots([])
         setHeatmapData([])
       })
@@ -146,18 +232,97 @@ export default function MapPage() {
       setStartMarker({ lat: markers.start.lat, lng: markers.start.lng })
       setEndMarker({ lat: markers.end.lat, lng: markers.end.lng })
     }
-    // Auto-close mobile sheet after route is found
-    setIsMobileSheetOpen(false)
+    // Keep mobile sheet open so user sees route results immediately
+    // setIsMobileSheetOpen(false) -- removed intentionally
   }, [])
 
   const handleSafeSpotsFound = useCallback((spots: SafeSpot[]) => {
     if (Array.isArray(spots) && spots.length > 0) {
-      setSafeSpots(spots)
+      setBaseSafeSpots(prev => {
+        const existing = new Set(prev.map(s => `${s.lat.toFixed(5)},${s.lng.toFixed(5)}`))
+        const added = spots.filter(s => !existing.has(`${s.lat.toFixed(5)},${s.lng.toFixed(5)}`))
+        return [...prev, ...added]
+      })
     }
   }, [])
 
-  const handleMapClick = useCallback(() => {
-    // Future: tap-to-set start/end
+  const handleMapLongPress = useCallback(
+    async (latlng: { lat: number; lng: number }) => {
+      // First long-press sets start, second long-press sets end and calculates route.
+      if (!startMarker || (startMarker && endMarker)) {
+        setStartMarker({ lat: latlng.lat, lng: latlng.lng })
+        setEndMarker(null)
+        setRoutes(null)
+        setSelectedRouteIndex(0)
+        toast.success('Start point set — long‑press again to set destination')
+        return
+      }
+
+      // We already have a start marker but no end marker yet.
+      setEndMarker({ lat: latlng.lat, lng: latlng.lng })
+      setRouteSearchLoading(true)
+      setRoutes(null)
+      setSelectedRouteIndex(0)
+
+      try {
+        const routeData = await calculateRoute(
+          startMarker.lat,
+          startMarker.lng,
+          latlng.lat,
+          latlng.lng,
+          travelHour,
+        )
+
+        setRoutes(routeData)
+        setSelectedRouteIndex(0)
+        // Open only the correct panel for the current breakpoint
+        if (window.innerWidth >= 768) {
+          setIsDesktopPanelOpen(true)
+        } else {
+          setIsMobileSheetOpen(true)
+        }
+
+        const midLat = (startMarker.lat + latlng.lat) / 2
+        const midLng = (startMarker.lng + latlng.lng) / 2
+        const spots = await getSafeSpots(midLat, midLng, 1.5)
+        if (Array.isArray(spots) && spots.length > 0) {
+          setBaseSafeSpots(prev => {
+            const existing = new Set(prev.map(s => `${s.lat.toFixed(5)},${s.lng.toFixed(5)}`))
+            const added = spots.filter(s => !existing.has(`${s.lat.toFixed(5)},${s.lng.toFixed(5)}`))
+            return [...prev, ...added]
+          })
+        }
+
+        toast.success('Route calculated from map clicks')
+      } catch (err) {
+        const error = err as { message?: string }
+        toast.error(error.message || 'Failed to calculate route from map clicks')
+        // Reset end marker on failure so user can try again
+        setEndMarker(null)
+      } finally {
+        setRouteSearchLoading(false)
+      }
+    },
+    [startMarker, endMarker, travelHour],
+  )
+
+  const handleClearRoute = useCallback(() => {
+    setRoutes(null)
+    setStartMarker(null)
+    setEndMarker(null)
+    setSelectedRouteIndex(0)
+    toast.success('Route and pins cleared')
+  }, [])
+
+  const handleRouteClick = useCallback((index: number) => {
+    setSelectedRouteIndex(index)
+    // Only open the relevant panel for the current breakpoint.
+    // Opening the mobile Sheet on desktop triggers its dark backdrop overlay.
+    if (window.innerWidth >= 768) {
+      setIsDesktopPanelOpen(true)
+    } else {
+      setIsMobileSheetOpen(true)
+    }
   }, [])
 
   const handleSpotClick = useCallback((spot: SafeSpot) => {
@@ -175,6 +340,8 @@ export default function MapPage() {
           onSafeSpotsFound={handleSafeSpotsFound}
           onSelectedRouteChange={setSelectedRouteIndex}
           onLoadingChange={setRouteSearchLoading}
+          externalRoutes={routes}
+          externalSelectedIndex={selectedRouteIndex}
         />
       </div>
 
@@ -191,6 +358,8 @@ export default function MapPage() {
             onSafeSpotsFound={handleSafeSpotsFound}
             onSelectedRouteChange={setSelectedRouteIndex}
             onLoadingChange={setRouteSearchLoading}
+            externalRoutes={routes}
+            externalSelectedIndex={selectedRouteIndex}
           />
         </SheetContent>
       </Sheet>
@@ -198,16 +367,18 @@ export default function MapPage() {
       <div className="relative min-h-0 flex-1">
         <div className="absolute inset-0 z-0 min-h-0">
           <SafeMap
-            routes={routes}
-            highlightedRouteIndex={selectedRouteIndex}
-            baseMapMode={baseMapMode}
-            heatmapData={showHeatmap ? heatmapData : null}
-            safeSpots={showSpots ? safeSpots : []}
-            onMapClick={handleMapClick}
             startMarker={startMarker}
             endMarker={endMarker}
-            userLocation={userLocation}
+            routes={routes}
+            highlightedRouteIndex={selectedRouteIndex}
+            heatmapData={showHeatmap ? heatmapData : null}
+            safeSpots={!showSpots || baseMapMode === 'satellite' ? [] : filteredSafeSpots}
+            onMapClick={undefined}
+            onMapLongPress={handleMapLongPress}
+            onRouteClick={handleRouteClick}
             onSpotClick={handleSpotClick}
+            onClearRoute={handleClearRoute}
+            baseMapMode={baseMapMode}
           />
         </div>
 
@@ -262,6 +433,8 @@ export default function MapPage() {
             onShowHeatmapChange={setShowHeatmap}
             showSpots={showSpots}
             onShowSpotsChange={setShowSpots}
+            showRealTime={showRealTime}
+            onShowRealTimeChange={setShowRealTime}
             baseMapMode={baseMapMode}
             onBaseMapModeChange={setBaseMapMode}
           />

@@ -8,6 +8,8 @@ interface OverlayPanelProps {
   onShowHeatmapChange: (v: boolean) => void
   showSpots: boolean
   onShowSpotsChange: (v: boolean) => void
+  showRealTime: boolean
+  onShowRealTimeChange: (v: boolean) => void
   baseMapMode: string
   onBaseMapModeChange: (mode: string) => void
 }
@@ -69,6 +71,8 @@ export default function MapOverlayPanel({
   onShowHeatmapChange,
   showSpots,
   onShowSpotsChange,
+  showRealTime,
+  onShowRealTimeChange,
   baseMapMode,
   onBaseMapModeChange,
 }: OverlayPanelProps) {
@@ -119,6 +123,12 @@ export default function MapOverlayPanel({
             active={showSpots}
             onChange={onShowSpotsChange}
             color="#2ECC71"
+          />
+          <PillToggle
+            label="Real-time Mode"
+            active={showRealTime}
+            onChange={onShowRealTimeChange}
+            color="#3498DB"
           />
         </Section>
 

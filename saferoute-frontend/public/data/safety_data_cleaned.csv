@@ -2200,3 +2200,127 @@ relation,Bulwagang Pambarangay ng Damayan,,,14.6395973,121.0150027
 relation,Manila City Impounding Area,,,14.6349131,120.9607515
 relation,SM Hypermarket,,Mo-Su 10:00-21:00,14.6811536,121.0212213
 relation,Puregold,,,14.6569378,121.0047184
+node,Fernando Poe Jr. Station (LRT-1),transit,05:00-22:00,14.6575,121.0211
+node,Balintawak Station (LRT-1),transit,05:00-22:00,14.6577,121.0039
+node,Monumento Station (LRT-1),transit,05:00-22:00,14.6542,120.9838
+node,5th Avenue Station (LRT-1),transit,05:00-22:00,14.6444,120.9835
+node,R. Papa Station (LRT-1),transit,05:00-22:00,14.6360,120.9827
+node,Abad Santos Station (LRT-1),transit,05:00-22:00,14.6304,120.9813
+node,Blumentritt Station (LRT-1),transit,05:00-22:00,14.6227,120.9828
+node,Tayuman Station (LRT-1),transit,05:00-22:00,14.6167,120.9832
+node,Bambang Station (LRT-1),transit,05:00-22:00,14.6111,120.9832
+node,Doroteo Jose Station (LRT-1),transit,05:00-22:00,14.6054,120.9818
+node,Carriedo Station (LRT-1),transit,05:00-22:00,14.5996,120.9814
+node,Central Terminal Station (LRT-1),transit,05:00-22:00,14.5925,120.9817
+node,United Nations Station (LRT-1),transit,05:00-22:00,14.5826,120.9846
+node,Pedro Gil Station (LRT-1),transit,05:00-22:00,14.5768,120.9883
+node,Quirino Station (LRT-1),transit,05:00-22:00,14.5703,120.9913
+node,Vito Cruz Station (LRT-1),transit,05:00-22:00,14.5633,120.9947
+node,Gil Puyat Station (LRT-1),transit,05:00-22:00,14.5540,120.9972
+node,Libertad Station (LRT-1),transit,05:00-22:00,14.5476,120.9985
+node,EDSA Station (LRT-1),transit,05:00-22:00,14.5377,121.0003
+node,Baclaran Station (LRT-1),transit,05:00-22:00,14.5343,120.9983
+node,Redemptorist-Aseana Station (LRT-1),transit,05:00-22:00,14.5298,120.9940
+node,MIA Road Station (LRT-1),transit,05:00-22:00,14.5190,120.9945
+node,Asiaworld (PITX) Station (LRT-1),transit,05:00-22:00,14.5118,120.9958
+node,Ninoy Aquino Station (LRT-1),transit,05:00-22:00,14.5020,120.9978
+node,Dr. Santos Station (LRT-1),transit,05:00-22:00,14.4925,121.0011
+node,Recto Station (LRT-2),transit,05:00-22:00,14.6038,120.9839
+node,Legarda Station (LRT-2),transit,05:00-22:00,14.6010,120.9918
+node,Pureza Station (LRT-2),transit,05:00-22:00,14.6018,121.0050
+node,V. Mapa Station (LRT-2),transit,05:00-22:00,14.6042,121.0180
+node,J. Ruiz Station (LRT-2),transit,05:00-22:00,14.6105,121.0255
+node,Gilmore Station (LRT-2),transit,05:00-22:00,14.6135,121.0345
+node,Betty Go-Belmonte Station (LRT-2),transit,05:00-22:00,14.6186,121.0435
+node,Araneta Center-Cubao (LRT2) Station (LRT-2),transit,05:00-22:00,14.6224,121.0526
+node,Anonas Station (LRT-2),transit,05:00-22:00,14.6281,121.0645
+node,Katipunan Station (LRT-2),transit,05:00-22:00,14.6318,121.0734
+node,Santolan Station (LRT-2),transit,05:00-22:00,14.6219,121.0858
+node,Marikina-Pasig Station (LRT-2),transit,05:00-22:00,14.6190,121.1011
+node,Antipolo Station (LRT-2),transit,05:00-22:00,14.6248,121.1215
+node,North Avenue Station (MRT-3),transit,05:00-22:00,14.6521,121.0323
+node,Quezon Avenue Station (MRT-3),transit,05:00-22:00,14.6425,121.0378
+node,GMA-Kamuning Station (MRT-3),transit,05:00-22:00,14.6353,121.0433
+node,Araneta Center-Cubao (MRT3) Station (MRT-3),transit,05:00-22:00,14.6195,121.0511
+node,Santolan-Annapolis Station (MRT-3),transit,05:00-22:00,14.6078,121.0564
+node,Ortigas Station (MRT-3),transit,05:00-22:00,14.5878,121.0567
+node,Shaw Boulevard Station (MRT-3),transit,05:00-22:00,14.5813,121.0536
+node,Boni Station (MRT-3),transit,05:00-22:00,14.5739,121.0481
+node,Guadalupe Station (MRT-3),transit,05:00-22:00,14.5673,121.0455
+node,Buendia Station (MRT-3),transit,05:00-22:00,14.5542,121.0321
+node,Ayala Station (MRT-3),transit,05:00-22:00,14.5491,121.0278
+node,Magallanes Station (MRT-3),transit,05:00-22:00,14.5420,121.0195
+node,Taft Avenue Station (MRT-3),transit,05:00-22:00,14.5376,121.0013
+node,University of the Philippines Diliman,university,06:00-22:00,14.6549,121.0645
+node,UP Diliman - University Avenue Gate,university,06:00-22:00,14.6508,121.0594
+node,UP Diliman - Katipunan Gate (UP Town Side),university,06:00-22:00,14.6505,121.0741
+node,UP Diliman - CP Garcia Gate,university,06:00-22:00,14.6582,121.0664
+node,UP Diliman - Velasquez Gate,university,06:00-22:00,14.6535,121.0615
+node,Ateneo de Manila University,university,06:00-22:00,14.6397,121.0775
+node,Ateneo Gate 1,university,06:00-22:00,14.6345,121.0774
+node,Ateneo Gate 2,university,06:00-22:00,14.6375,121.0778
+node,Ateneo Gate 3,university,06:00-22:00,14.6405,121.0782
+node,Miriam College,university,06:00-22:00,14.6465,121.0763
+node,University of Santo Tomas,university,06:00-22:00,14.6091,120.9896
+node,UST - España Gate (Main),university,06:00-22:00,14.6083,120.9898
+node,UST - P. Noval Gate,university,06:00-22:00,14.6095,120.9868
+node,UST - Dapitan Gate,university,06:00-22:00,14.6116,120.9893
+node,UST - Lacson Gate,university,06:00-22:00,14.6105,120.9925
+node,De La Salle University Manila,university,06:00-22:00,14.5648,120.9932
+node,DLSU - North Gate (Taft),university,06:00-22:00,14.5661,120.9926
+node,DLSU - South Gate (Taft),university,06:00-22:00,14.5641,120.9935
+node,DLSU - Agno Gate,university,06:00-22:00,14.5645,120.9918
+node,Polytechnic University of the Philippines,university,06:00-22:00,14.5982,121.0108
+node,PUP - Main Gate,university,06:00-22:00,14.5975,121.0101
+node,Far Eastern University Manila,university,06:00-22:00,14.6041,120.9863
+node,Centro Escolar University,university,06:00-22:00,14.5991,120.9902
+node,Adamson University,university,06:00-22:00,14.5878,120.9861
+node,Mapúa University,university,06:00-22:00,14.5906,120.9774
+node,University of the East Manila,university,06:00-22:00,14.6019,120.9888
+node,National University Manila,university,06:00-22:00,14.6046,120.9944
+node,Pamantasan ng Lungsod ng Maynila,university,06:00-22:00,14.5866,120.9763
+node,Technological University of the Philippines,university,06:00-22:00,14.5873,120.9845
+node,Philippine Normal University,university,06:00-22:00,14.5886,120.9835
+node,San Beda University,university,06:00-22:00,14.5997,120.9919
+node,Colegio de San Juan de Letran,university,06:00-22:00,14.5937,120.9765
+node,Technological Institute of the Philippines Manila,university,06:00-22:00,14.5947,120.9892
+node,Technological Institute of the Philippines QC,university,06:00-22:00,14.6231,121.0575
+node,Quezon City University - Main,university,06:00-22:00,14.7008,121.0335
+node,Quezon City University - Batasan,university,06:00-22:00,14.6936,121.0945
+node,Quezon City University - San Francisco,university,06:00-22:00,14.6585,121.0205
+node,New Era University,university,06:00-22:00,14.6644,121.0566
+node,World Citi Colleges QC,university,06:00-22:00,14.6247,121.0622
+node,Trinity University of Asia,university,06:00-22:00,14.6199,121.0189
+node,St. Paul University Quezon City,university,06:00-22:00,14.6148,121.0345
+node,St. Paul University Manila,university,06:00-22:00,14.5745,120.9902
+node,Arellano University Main,university,06:00-22:00,14.6015,120.9934
+node,Manila Central University,university,06:00-22:00,14.6582,120.9847
+node,Our Lady of Fatima University QC,university,06:00-22:00,14.7005,121.0543
+node,FEU-NRMF,university,06:00-22:00,14.6836,121.0614
+node,AMA Computer University,university,06:00-22:00,14.6685,121.0195
+node,STI College Quezon Avenue,university,06:00-22:00,14.6394,121.0315
+node,De Ocampo Memorial College,university,06:00-22:00,14.5995,121.0025
+node,La Consolacion College Manila,university,06:00-22:00,14.5985,120.9915
+node,St. Jude College Manila,university,06:00-22:00,14.6105,120.9882
+node,NCBA - Fairview,university,06:00-22:00,14.7052,121.0604
+node,NCBA - Cubao,university,06:00-22:00,14.6225,121.0555
+node,Central Colleges of the Philippines,university,06:00-22:00,14.6074,121.0142
+node,Eulogio Amang Rodriguez Institute (EARIST),university,06:00-22:00,14.5991,121.0044
+node,Philippine Women's University,university,06:00-22:00,14.5748,120.9893
+node,Lyceum of the Philippines University,university,06:00-22:00,14.5925,120.9764
+node,Asian College Quezon City,university,06:00-22:00,14.6235,121.0595
+node,CIIT College of Arts and Technology,university,06:00-22:00,14.6335,121.0345
+node,National Teachers College,university,06:00-22:00,14.5975,120.9895
+node,St. Mary's College of QC,university,06:00-22:00,14.6275,121.0255
+node,Siena College of Quezon City,university,06:00-22:00,14.6385,121.0125
+node,UP Manila - College of Medicine,university,06:00-22:00,14.5775,120.9865
+node,UP Manila - PGH,university,06:00-22:00,14.5795,120.9875
+node,UE Ramon Magsaysay (UERM),university,06:00-22:00,14.6085,121.0165
+node,San Sebastian College - Recoletos,university,06:00-22:00,14.6002,120.9885
+node,Chiang Kai Shek College,university,06:00-22:00,14.6115,120.9785
+node,EAC - Emilio Aguinaldo College,university,06:00-22:00,14.5845,120.9885
+node,St. Scholastica's College,university,06:00-22:00,14.5635,120.9945
+node,PCU - Philippine Christian University,university,06:00-22:00,14.5755,120.9895
+node,Dasmariñas Village Gate (for Mapua/DLSU reference),university,06:00-22:00,14.5915,120.9765
+node,FEU Diliman,university,06:00-22:00,14.6855,121.0825
+node,Access Computer College,university,06:00-22:00,14.6035,120.9835

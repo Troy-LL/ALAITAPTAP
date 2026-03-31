@@ -105,6 +105,7 @@ class SafetyScorer:
                 "lat": float(s.latitude),
                 "lng": float(s.longitude),
                 "type": (s.type or "convenience_store").strip().lower(),
+                "name": getattr(s, "name", "Safe Spot"),
             }
             for s in spots
         ]
@@ -149,6 +150,23 @@ class SafetyScorer:
             )
         return heatmap
 
+    def get_passed_safe_spots(self, route_coords, radius_meters=100):
+        """Returns a list of unique names of safe spots the route passes within radius_meters."""
+        if not self._spot_tree or not self._spot_rows:
+            return []
+            
+        passed = set()
+        sampled_points = self._sample_route(route_coords, interval_meters=100)
+        for point in sampled_points:
+            lng, lat = point
+            r_rad = radius_meters / 6371000.0
+            q = np.radians([[lat, lng]])
+            idx = self._spot_tree.query_radius(q, r=r_rad)[0]
+            for j in idx:
+                passed.add(self._spot_rows[j]["name"])
+                
+        return sorted(list(passed))
+
     def _sample_route(self, coords, interval_meters=50):
         if not coords:
             return []
@@ -174,14 +192,13 @@ class SafetyScorer:
         r_rad = radius_meters / 6371000.0
         q = np.radians([[lat, lng]])
         idx = self._crime_tree.query_radius(q, r=r_rad)[0]
-
         load = 0.0
         for j in idx:
             row = self._crime_rows[j]
             dist_m = geodesic((lat, lng), (row["lat"], row["lng"])).meters
             w = CRIME_WEIGHTS.get(row["type"], CRIME_WEIGHTS["other"])
             # Smoother decay than hard count: full weight inside ~50m, taper by distance
-            decay = 1.0 / (1.0 + (dist_m / 80.0) ** 2)
+            decay = 1.0 / (1.0 + (dist_m / 85.0) ** 2)
             load += w * decay
         return load
 
@@ -200,7 +217,7 @@ class SafetyScorer:
             decay = 1.0 / (1.0 + (dist_m / 100.0) ** 2)
             w = SPOT_BONUS_WEIGHT.get(row["type"], 3.2)
             total += w * decay
-        return min(24.0, total)
+        return min(30.0, total)
 
     def _osm_lamp_lighting_factor(self, lat, lng, radius_meters=90):
         """
@@ -264,15 +281,15 @@ class SafetyScorer:
         lng, lat = point
 
         crime_load = self._weighted_crime_load(lat, lng, radius_meters=200)
-        crime_penalty = min(42.0, crime_load * 9.0)
+        crime_penalty = min(50.0, crime_load * 10.0)
 
         # Time-of-day base risk (night travel)
         if 22 <= hour or hour <= 5:
-            time_penalty = 26.0
+            time_penalty = 18.0
         elif 18 <= hour <= 21:
-            time_penalty = 14.0
+            time_penalty = 10.0
         else:
-            time_penalty = 6.0
+            time_penalty = 0.0
 
         lighting_penalty = self._lighting_penalty(hour)
         lighting_penalty *= self._osm_lamp_lighting_factor(lat, lng)
@@ -284,6 +301,8 @@ class SafetyScorer:
             + self._osm_surveillance_bonus(lat, lng)
             + self._osm_police_bonus(lat, lng)
         )
+        # Increase the bonus multiplier drastically to create a wide variation in route scores
+        bonus = bonus * 1.8
 
         score = 100.0 - total_penalty + bonus
         return float(max(5.0, min(99.0, score)))

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { toast } from 'sonner'
 import {
   MapPin,
@@ -17,8 +17,8 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Slider } from '@/components/ui/slider'
 import BuddyAlert from '@/components/BuddyAlert'
-import type { RouteResult, SafeSpot } from '@/services/api'
-import { calculateRoute, geocodeAddress, getSafeSpots } from '@/services/api'
+import type { RouteResult, SafeSpot, GeocodedLocation, RailwaySchedule } from '@/services/api'
+import { calculateRoute, geocodeAddress, getSafeSpots, getRailwaySchedules } from '@/services/api'
 
 interface RouteContext {
   start: { lat: number; lng: number }
@@ -40,6 +40,9 @@ interface RoutePlannerProps {
   onSafeSpotsFound?: (spots: SafeSpot[]) => void
   onSelectedRouteChange?: (index: number) => void
   onLoadingChange?: (loading: boolean) => void
+  /** Routes and selection driven from the parent (e.g. after map click) */
+  externalRoutes?: RouteResult[] | null
+  externalSelectedIndex?: number
 }
 
 const SCORE_COLORS: Record<string, string> = {
@@ -48,6 +51,10 @@ const SCORE_COLORS: Record<string, string> = {
   red: '#ef4444',
 }
 
+const GEOCODE_SUFFIX = ' Metro Manila Philippines'
+const AUTOCOMPLETE_DEBOUNCE_MS = 350
+const MIN_QUERY_LEN = 2
+
 export default function RoutePlanner({
   travelHour,
   onTravelHourChange,
@@ -55,6 +62,8 @@ export default function RoutePlanner({
   onSafeSpotsFound,
   onSelectedRouteChange,
   onLoadingChange,
+  externalRoutes,
+  externalSelectedIndex,
 }: RoutePlannerProps) {
   const [startInput, setStartInput] = useState('')
   const [endInput, setEndInput] = useState('')
@@ -64,6 +73,38 @@ export default function RoutePlanner({
   const [routes, setRoutes] = useState<RouteResult[] | null>(null)
   const [selectedRoute, setSelectedRoute] = useState(0)
   const [routeContext, setRouteContext] = useState<RouteContext | null>(null)
+
+  // Sync external selection (e.g. route clicked on map) into local state
+  useEffect(() => {
+    if (externalSelectedIndex !== undefined) {
+      setSelectedRoute(externalSelectedIndex)
+    }
+  }, [externalSelectedIndex])
+
+  // The "effective" routes & selection: prefer external (map-driven) over internal
+  const activeRoutes = externalRoutes ?? routes
+  const activeSelectedRoute = externalSelectedIndex ?? selectedRoute
+
+  const [startResolved, setStartResolved] = useState<GeocodedLocation | null>(null)
+  const [endResolved, setEndResolved] = useState<GeocodedLocation | null>(null)
+  const [startSuggestions, setStartSuggestions] = useState<GeocodedLocation[]>([])
+  const [endSuggestions, setEndSuggestions] = useState<GeocodedLocation[]>([])
+  const [startSuggestOpen, setStartSuggestOpen] = useState(false)
+  const [endSuggestOpen, setEndSuggestOpen] = useState(false)
+  const startDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const endDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [schedules, setSchedules] = useState<RailwaySchedule[]>([])
+
+  useEffect(() => {
+    getRailwaySchedules().then(setSchedules)
+  }, [])
+
+  const fetchSuggestions = useCallback(async (raw: string) => {
+    const q = raw.trim()
+    if (q.length < MIN_QUERY_LEN) return []
+    const results = await geocodeAddress(q + GEOCODE_SUFFIX)
+    return results || []
+  }, [])
 
   useEffect(() => {
     onLoadingChange?.(loading)
@@ -76,10 +117,48 @@ export default function RoutePlanner({
   }, [routes, onSelectedRouteChange])
 
   async function geocode(query: string) {
-    const results = await geocodeAddress(query)
+    const results = await geocodeAddress(query + GEOCODE_SUFFIX)
     if (!results || results.length === 0)
       throw new Error(`No results for "${query}"`)
     return results[0]
+  }
+
+  function scheduleStartSuggestions(value: string) {
+    if (startDebounceRef.current) clearTimeout(startDebounceRef.current)
+    if (value.trim().length < MIN_QUERY_LEN) {
+      setStartSuggestions([])
+      setStartSuggestOpen(false)
+      return
+    }
+    startDebounceRef.current = setTimeout(async () => {
+      try {
+        const list = await fetchSuggestions(value)
+        setStartSuggestions(list)
+        setStartSuggestOpen(list.length > 0)
+      } catch {
+        setStartSuggestions([])
+        setStartSuggestOpen(false)
+      }
+    }, AUTOCOMPLETE_DEBOUNCE_MS)
+  }
+
+  function scheduleEndSuggestions(value: string) {
+    if (endDebounceRef.current) clearTimeout(endDebounceRef.current)
+    if (value.trim().length < MIN_QUERY_LEN) {
+      setEndSuggestions([])
+      setEndSuggestOpen(false)
+      return
+    }
+    endDebounceRef.current = setTimeout(async () => {
+      try {
+        const list = await fetchSuggestions(value)
+        setEndSuggestions(list)
+        setEndSuggestOpen(list.length > 0)
+      } catch {
+        setEndSuggestions([])
+        setEndSuggestOpen(false)
+      }
+    }, AUTOCOMPLETE_DEBOUNCE_MS)
   }
 
   async function handleSearch(e: React.FormEvent) {
@@ -95,8 +174,8 @@ export default function RoutePlanner({
 
     try {
       const [start, end] = await Promise.all([
-        geocode(startInput + ' Metro Manila Philippines'),
-        geocode(endInput + ' Metro Manila Philippines'),
+        startResolved ? Promise.resolve(startResolved) : geocode(startInput),
+        endResolved ? Promise.resolve(endResolved) : geocode(endInput),
       ])
 
       setRouteContext({
@@ -156,7 +235,7 @@ export default function RoutePlanner({
           Plan Safe Route
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Enter your walkway in Metro Manila
+          Type for suggestions, or long‑press the map to set A/B
         </p>
       </div>
 
@@ -164,8 +243,8 @@ export default function RoutePlanner({
       <div className="flex-1 overflow-y-auto">
         {/* Form */}
         <form onSubmit={handleSearch} className="space-y-5 p-6">
-          {/* Start location */}
-          <div className="space-y-2">
+          {/* Start location — autocomplete */}
+          <div className="space-y-2 relative">
             <Label
               htmlFor="start-location"
               className="flex items-center gap-1.5 text-sm font-medium"
@@ -177,13 +256,57 @@ export default function RoutePlanner({
               id="start-location"
               placeholder="e.g., Katipunan MRT Station"
               value={startInput}
-              onChange={(e) => setStartInput(e.target.value)}
+              autoComplete="off"
+              onChange={(e) => {
+                const v = e.target.value
+                setStartInput(v)
+                setStartResolved(null)
+                scheduleStartSuggestions(v)
+              }}
+              onFocus={() => {
+                if (startSuggestions.length > 0) setStartSuggestOpen(true)
+              }}
+              onBlur={() => {
+                setTimeout(() => setStartSuggestOpen(false), 180)
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') setStartSuggestOpen(false)
+              }}
               aria-label="Starting point"
+              aria-autocomplete="list"
+              aria-expanded={startSuggestOpen}
+              aria-controls="start-suggestions-list"
             />
+            {startSuggestOpen && startSuggestions.length > 0 && (
+              <ul
+                id="start-suggestions-list"
+                role="listbox"
+                className="absolute left-0 right-0 top-full z-50 mt-1 max-h-52 overflow-auto rounded-md border border-border bg-popover py-1 text-sm shadow-md"
+              >
+                {startSuggestions.map((s, i) => (
+                  <li key={`${s.label}-${i}`} role="option">
+                    <button
+                      type="button"
+                      className="flex w-full cursor-pointer items-start gap-2 px-3 py-2 text-left text-foreground hover:bg-muted/80"
+                      onMouseDown={(ev) => ev.preventDefault()}
+                      onClick={() => {
+                        setStartInput(s.label)
+                        setStartResolved(s)
+                        setStartSuggestOpen(false)
+                        setStartSuggestions([])
+                      }}
+                    >
+                      <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                      <span className="line-clamp-2 leading-snug">{s.label}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
-          {/* End location */}
-          <div className="space-y-2">
+          {/* End location — autocomplete */}
+          <div className="space-y-2 relative">
             <Label
               htmlFor="end-location"
               className="flex items-center gap-1.5 text-sm font-medium"
@@ -195,9 +318,53 @@ export default function RoutePlanner({
               id="end-location"
               placeholder="e.g., Ateneo Gate 1"
               value={endInput}
-              onChange={(e) => setEndInput(e.target.value)}
+              autoComplete="off"
+              onChange={(e) => {
+                const v = e.target.value
+                setEndInput(v)
+                setEndResolved(null)
+                scheduleEndSuggestions(v)
+              }}
+              onFocus={() => {
+                if (endSuggestions.length > 0) setEndSuggestOpen(true)
+              }}
+              onBlur={() => {
+                setTimeout(() => setEndSuggestOpen(false), 180)
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') setEndSuggestOpen(false)
+              }}
               aria-label="Destination"
+              aria-autocomplete="list"
+              aria-expanded={endSuggestOpen}
+              aria-controls="end-suggestions-list"
             />
+            {endSuggestOpen && endSuggestions.length > 0 && (
+              <ul
+                id="end-suggestions-list"
+                role="listbox"
+                className="absolute left-0 right-0 top-full z-50 mt-1 max-h-52 overflow-auto rounded-md border border-border bg-popover py-1 text-sm shadow-md"
+              >
+                {endSuggestions.map((s, i) => (
+                  <li key={`${s.label}-${i}`} role="option">
+                    <button
+                      type="button"
+                      className="flex w-full cursor-pointer items-start gap-2 px-3 py-2 text-left text-foreground hover:bg-muted/80"
+                      onMouseDown={(ev) => ev.preventDefault()}
+                      onClick={() => {
+                        setEndInput(s.label)
+                        setEndResolved(s)
+                        setEndSuggestOpen(false)
+                        setEndSuggestions([])
+                      }}
+                    >
+                      <Navigation className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                      <span className="line-clamp-2 leading-snug">{s.label}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {/* Time slider */}
@@ -251,12 +418,12 @@ export default function RoutePlanner({
         </form>
 
         {/* Route results */}
-        {routes && (
+        {activeRoutes && (
           <div className="space-y-3 px-6 pb-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
             {/* Results header */}
             <div className="flex items-center justify-between">
               <span className="text-sm font-semibold text-foreground">
-                {routes.length} Routes Found
+                {activeRoutes.length} Routes Found
               </span>
               <span className="text-xs text-muted-foreground">
                 Sorted by safety
@@ -264,11 +431,11 @@ export default function RoutePlanner({
             </div>
 
             {/* Route cards */}
-            {routes.map((route, idx) => (
+            {activeRoutes.map((route, idx) => (
               <Card
                 key={route.route_id}
                 className={`cursor-pointer transition-all hover:shadow-md ${
-                  selectedRoute === idx
+                  activeSelectedRoute === idx
                     ? 'ring-2 ring-primary shadow-md'
                     : 'hover:border-primary/30'
                 }`}
@@ -285,7 +452,7 @@ export default function RoutePlanner({
                     onSelectedRouteChange?.(idx)
                   }
                 }}
-                aria-pressed={selectedRoute === idx}
+                aria-pressed={activeSelectedRoute === idx}
                 aria-label={`Route option ${idx + 1}, safety ${route.safety_score} of 100`}
               >
                 <CardHeader className="px-4 pt-3 pb-2">
@@ -345,11 +512,99 @@ export default function RoutePlanner({
                       min walk
                     </span>
                   </div>
+
+                  {/* Passed Safe Spots — shown for the selected route only */}
+                  {activeSelectedRoute === idx && route.passed_safe_spots && route.passed_safe_spots.length > 0 && (
+                    <div className="mt-2.5 pt-2 border-t border-border/50 flex flex-col gap-1.5">
+                      <div className="flex items-center gap-1.5 text-[11px] font-medium text-foreground/80">
+                        <Shield className="h-3 w-3 text-primary" />
+                        Passes near:
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {route.passed_safe_spots.slice(0, 5).map((spot, i) => (
+                          <span key={i} className="text-[10px] bg-secondary/60 text-secondary-foreground px-1.5 py-0.5 rounded-md border border-border/50 truncate max-w-[140px]">
+                            {spot}
+                          </span>
+                        ))}
+                        {route.passed_safe_spots.length > 5 && (
+                          <span className="text-[10px] bg-secondary/60 text-secondary-foreground px-1.5 py-0.5 rounded-md border border-border/50">
+                            +{route.passed_safe_spots.length - 5} more
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
 
             <BuddyAlert routeContext={routeContext} disabled={!routeContext} />
+
+            {/* Railway Status Section */}
+            {schedules.length > 0 && (
+              <div className="mt-4 space-y-3">
+                <div className="flex items-center justify-between border-t border-border pt-4">
+                  <span className="text-sm font-semibold text-foreground">Railway Status & Alerts</span>
+                  <Badge variant="outline" className="text-[10px] uppercase font-bold text-primary border-primary/30">Live Updates</Badge>
+                </div>
+                
+                {/* Special Holy Week Alert - High Visibility */}
+                {schedules.some(s => s.notes.includes('Holy Week')) && (
+                  <Card className="border-red-500/50 bg-red-500/5 shadow-sm overflow-hidden border-2">
+                    <CardHeader className="py-2 px-3 bg-red-500/10 flex flex-row items-center gap-2">
+                      <div className="bg-red-500 p-1 rounded-full">
+                        <Clock className="w-3 h-3 text-white" />
+                      </div>
+                      <span className="text-[11px] font-bold text-red-600 uppercase tracking-wider">Holy Week Maintenance</span>
+                    </CardHeader>
+                    <CardContent className="py-2.5 px-3">
+                      <p className="text-[11px] font-medium text-red-600 leading-normal">
+                        LRT-1, LRT-2, and MRT-3 will be <span className="font-bold underline">CLOSED</span> from April 2 to 5, 2026. Please plan your travel accordingly.
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Grouped Statuses */}
+                <div className="grid grid-cols-1 gap-2">
+                  {['LRT-1', 'LRT-2', 'MRT-3'].map(line => {
+                    const lineSchedules = schedules.filter(s => s.line === line && !s.notes.includes('Holy Week'))
+                    const isClosedSoon = schedules.some(s => s.line === line && s.notes.includes('Holy Week'))
+                    if (lineSchedules.length === 0) return null
+                    
+                    return (
+                      <Card key={line} className="border-border/60 bg-muted/20">
+                        <CardContent className="py-2.5 px-3">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <span className="text-xs font-bold text-foreground">{line} Status</span>
+                            {isClosedSoon ? (
+                              <Badge variant="outline" className="text-[10px] text-amber-600 border-amber-600/30">System Maintenance Tomorrow</Badge>
+                            ) : (
+                              <Badge variant="outline" className="text-[10px] text-green-600 border-green-600/30">Operational</Badge>
+                            )}
+                          </div>
+                          <div className="space-y-1.5">
+                            {lineSchedules.map((s, i) => (
+                              <div key={i} className="flex flex-col border-l-2 border-primary/20 pl-2 py-0.5">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-[10px] font-medium text-foreground truncate max-w-[150px]">
+                                    {s.origin} → {s.destination}
+                                  </span>
+                                  <span className="text-[10px] text-muted-foreground font-mono">
+                                    {s.first_train} – {s.last_train}
+                                  </span>
+                                </div>
+                                <div className="text-[9px] text-muted-foreground italic">{s.schedule_type}</div>
+                              </div>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -22,6 +22,7 @@ export interface RouteResult {
   safety_score: number
   safety_label: string
   color: 'green' | 'yellow' | 'red'
+  passed_safe_spots?: string[]
 }
 
 export interface HeatmapPoint {
@@ -41,6 +42,16 @@ export interface SafeSpot {
   distance_km?: number
 }
 
+export interface RailwaySchedule {
+  line: string
+  origin: string
+  destination: string
+  schedule_type: string
+  first_train: string
+  last_train: string
+  notes: string
+}
+
 export interface BuddyAlertPayload {
   user_name: string
   current_lat: number
@@ -48,6 +59,11 @@ export interface BuddyAlertPayload {
   current_address: string
   destination: string
   buddy_phone: string
+}
+
+export async function getRailwaySchedules(): Promise<RailwaySchedule[]> {
+  const { data } = await api.get('/api/railway-schedules')
+  return data
 }
 
 export async function calculateRoute(
